@@ -1,16 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>GymFitnessSystem</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gym and Fitness App</title>
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag 'core', 'icon-font', 'dataTables.bootstrap4.min', 'responsive.bootstrap4.min', 'style', 'style', media: 'all', 'data-turbolinks-track': 'reload' %>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <%= javascript_include_tag('core.js') %>
+    <%= javascript_include_tag('script.min.js') %>
+    <%= javascript_include_tag('process.js') %>
+    <%= javascript_include_tag('layout-settings.js') %>
+
+
+<!--    <script src="vendors/scripts/dashboard.js"></script>-->
+
   </head>
 
   <body>
+
+    <%#= render "partials/header" %>
+    <%#= render "partials/right-sidebar" %>
+    <%#= render "partials/left-sidebar" %>
+
     <%= yield %>
+
   </body>
 </html>
