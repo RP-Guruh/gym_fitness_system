@@ -28,6 +28,8 @@ gem "jbuilder"
 
 gem "sassc-rails"
 gem 'devise', '~> 4.9', '>= 4.9.4'
+gem 'foreman', github: 'ddollar/foreman'
+
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
@@ -68,3 +70,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "tailwindcss-rails", "~> 2.7"

@@ -3,3 +3,7 @@
 //= link_tree ../../javascript .js
 //= link_tree ../../../vendor/javascript .js
 //= link_tree ../../../vendor/scripts .js
+//= link_tree ../builds
+//= link controllers/slideover_controller.js
+//= link controllers/notifications_controller.js
+

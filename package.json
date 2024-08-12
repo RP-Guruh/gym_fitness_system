@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@stimulus-components/notification": "^3.0.0",
+    "el-transition": "^0.0.7",
+    "flowbite": "^2.5.1",
+    "stimulus-notification": "^2.2.0",
+    "stimulus-use": "^0.52.2",
+    "toastr": "^2.1.4"
+  }
+}

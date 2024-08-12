@@ -1,6 +1,8 @@
 
 
 <div class="login-page">
+
+
   <div class="login-header box-shadow">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <div class="brand-logo">
@@ -15,10 +17,15 @@
       </div>
     </div>
   </div>
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
+
+
+  <% flash.each do |key, value| %>
+    <% toast_type = key == 'alert' ? 'toast-danger' : 'toast-success' %>
+    <%= render partial: "shared/notification", locals: { message: flash[:alert] || flash[:notice], status: toast_type } %>
+  <% end %>
 
   <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-6 col-lg-7">
@@ -29,8 +36,7 @@
             <div class="login-title">
               <h2 class="text-center text-primary">Login To App</h2>
             </div>
-            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name))  do |f| %>
               <div class="input-group custom">
                 <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-control-lg", placeholder: "Email" %>
                 <div class="input-group-append custom">
@@ -65,6 +71,7 @@
                 <div class="col-sm-12">
                   <div class="input-group mb-0">
                     <%= f.submit "Sign in", class: "btn btn-primary btn-lg btn-block" %>
+
                   </div>
                 </div>
               </div>
@@ -75,7 +82,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 
