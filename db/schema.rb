@@ -10,7 +10,171 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_10_142319) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_15_160201) do
+  create_table "class_packages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.bigint "trainers_id"
+    t.decimal "price", precision: 10, scale: 2
+    t.integer "duration"
+    t.string "status", default: "Active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.index ["trainers_id"], name: "index_class_packages_on_trainers_id"
+  end
+
+  create_table "inventories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.bigint "inventory_category_id", null: false
+    t.integer "quantity"
+    t.string "product_image"
+    t.date "purchase_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.index ["inventory_category_id"], name: "index_inventories_on_inventory_category_id"
+  end
+
+  create_table "inventory_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+  end
+
+  create_table "inventory_conditions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "inventory_id", null: false
+    t.string "condition"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inventory_id"], name: "index_inventory_conditions_on_inventory_id"
+  end
+
+  create_table "member_classes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "member_id", null: false
+    t.bigint "class_package_id", null: false
+    t.date "enrollment_date"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["class_package_id"], name: "index_member_classes_on_class_package_id"
+    t.index ["member_id"], name: "index_member_classes_on_member_id"
+  end
+
+  create_table "members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.bigint "users_id"
+    t.string "email"
+    t.string "handphone_number"
+    t.string "gender"
+    t.text "address"
+    t.string "city"
+    t.string "province"
+    t.string "emergency_phone_name"
+    t.string "emergency_phone_number"
+    t.string "emergency_phone_status"
+    t.date "membership_start_date"
+    t.date "membership_end_date"
+    t.integer "created_by"
+    t.string "status", default: "Active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_members_on_email", unique: true
+    t.index ["users_id"], name: "index_members_on_users_id"
+  end
+
+  create_table "membership_packages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.decimal "price", precision: 10, scale: 2
+    t.integer "duration"
+    t.string "status", default: "Active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+  end
+
+  create_table "product_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+  end
+
+  create_table "product_transactions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.string "transaction_type"
+    t.date "transaction_date"
+    t.string "transaction_file"
+    t.decimal "amount", precision: 10, scale: 2
+    t.decimal "balance", precision: 10, scale: 2
+    t.decimal "refund", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.index ["product_id"], name: "index_product_transactions_on_product_id"
+  end
+
+  create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.bigint "product_category_id", null: false
+    t.decimal "price", precision: 10, scale: 2
+    t.integer "quantity"
+    t.string "product_image"
+    t.date "expire_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.index ["product_category_id"], name: "index_products_on_product_category_id"
+  end
+
+  create_table "register_transactions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "member_id", null: false
+    t.bigint "membership_package_id", null: false
+    t.string "transaction_type"
+    t.date "transaction_date"
+    t.string "transaction_file"
+    t.decimal "amount", precision: 10, scale: 2
+    t.decimal "balance", precision: 10, scale: 2
+    t.decimal "refund", precision: 10, scale: 2
+    t.string "payment_method"
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.index ["member_id"], name: "index_register_transactions_on_member_id"
+    t.index ["membership_package_id"], name: "index_register_transactions_on_membership_package_id"
+  end
+
+  create_table "trainers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.bigint "users_id"
+    t.string "email"
+    t.string "handphone_number"
+    t.string "gender"
+    t.text "address"
+    t.string "city"
+    t.string "province"
+    t.string "emergency_phone_name"
+    t.string "emergency_phone_number"
+    t.string "emergency_phone_status"
+    t.string "specialization"
+    t.date "join_date"
+    t.date "end_date"
+    t.string "status", default: "Active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.index ["email"], name: "index_trainers_on_email", unique: true
+    t.index ["users_id"], name: "index_trainers_on_users_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -31,8 +195,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_10_142319) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "role", default: "owner"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "class_packages", "trainers", column: "trainers_id"
+  add_foreign_key "inventories", "inventory_categories"
+  add_foreign_key "inventory_conditions", "inventories"
+  add_foreign_key "member_classes", "class_packages"
+  add_foreign_key "member_classes", "members"
+  add_foreign_key "members", "users", column: "users_id"
+  add_foreign_key "product_transactions", "products"
+  add_foreign_key "products", "product_categories"
+  add_foreign_key "register_transactions", "members"
+  add_foreign_key "register_transactions", "membership_packages"
+  add_foreign_key "trainers", "users", column: "users_id"
 end
