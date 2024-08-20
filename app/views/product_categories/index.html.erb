@@ -1,23 +1,51 @@
-
-
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <% content_for :title, "Product categories" %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Product categories</h1>
-    <%= link_to "New product category", new_product_category_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+<div class="main-container">
+  <!-- basic table  Start -->
+  <div class="pd-20 card-box mb-30">
+    <div class="clearfix mb-20">
+      <div class="pull-left">
+        <h4 class="text-blue h4">Master data product category</h4>
+      </div>
+      <div class="pull-right">
+        <a href="#basic-table" class="btn btn-primary btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button"><i class="fa fa-code"></i> Add new data</a>
+      </div>
+    </div>
+    <div class="mt-4">
+      <div class="flex items-center space-x-2">
+        <%= search_form_for @q do |f| %>
+          <%= f.search_field :name_cont, class: "", placeholder: "Search Here" %>
+          <%= f.date_field(:created_at_eq, placeholder: t(:date_format)) %>
+          <%= f.submit "Search", class: "btn btn-primary btn-sm px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600" %>
+        <% end %>
+      </div>
+    </div>
+    <table class="table mt-4">
+      <div class="d-flex justify-content-end">
+        <%== pagy_bootstrap_nav(@pagy) %>
+      </div>
+      <thead>
+        <tr>
+          <th scope="col"> <%= sort_link(@q, :id, '#', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :name, 'Name', default_order: :desc) %></th>
+          <th scope="col">Description</th>
+          <th scope="col"><%= sort_link(@q, :created_at, default_order: :desc) %></th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @product_categories.each do |product| %>
+          <tr>
+            <td><%= product.id %></td>
+            <td><%= highlight product.name, params.dig(:q, :name_cont) %> </td>
+            <td><%= product.description %></td>
+            <td><%= product.created_at.strftime("%d %B %Y at %H:%M") %></td>
+            <td><span class="badge badge-primary">Primary</span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-end">
+      <%== pagy_bootstrap_nav(@pagy) %>
+    </div>
   </div>
-
-  <div id="product_categories" class="min-w-full">
-    <% @product_categories.each do |product_category| %>
-      <%= render product_category %>
-      <p>
-        <%= link_to "Show this product category", product_category, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
-    <% end %>
-  </div>
+  <!-- basic table  End -->
 </div>

@@ -11,3 +11,5 @@ import './plugins/datatables/js/dataTables.bootstrap4.min';
 import './plugins/datatables/js/dataTables.responsive.min';
 import './plugins/datatables/js/responsive.bootstrap4.min';
 import './dashboard';
+
+import 'datatables.net'

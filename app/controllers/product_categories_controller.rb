@@ -1,9 +1,15 @@
+
 class ProductCategoriesController < ApplicationController
+  include Pagy::Backend
   before_action :set_product_category, only: %i[ show edit update destroy ]
 
   # GET /product_categories or /product_categories.json
   def index
-    @product_categories = ProductCategory.all
+   
+    @q = ProductCategory.ransack(params[:q])
+    # @product_categories = @q.result(distinct: true)
+    @pagy, @product_categories = pagy(@q.result(distinct: true), items: 10)
+
   end
 
   # GET /product_categories/1 or /product_categories/1.json

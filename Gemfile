@@ -29,7 +29,9 @@ gem "jbuilder"
 gem "sassc-rails"
 gem 'devise', '~> 4.9', '>= 4.9.4'
 gem 'foreman', github: 'ddollar/foreman'
-
+gem 'ajax-datatables-rails', '~> 0.4.0'
+gem 'ransack', :github => 'activerecord-hackery/ransack', :branch => 'main'
+gem 'pagy', '~> 9.0' # omit patch digit
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
@@ -72,3 +74,5 @@ group :test do
 end
 
 gem "tailwindcss-rails", "~> 2.7"
+
+gem "jquery-datatables", "~> 1.10"
