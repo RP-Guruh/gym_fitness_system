@@ -32,6 +32,8 @@ gem 'foreman', github: 'ddollar/foreman'
 gem 'ajax-datatables-rails', '~> 0.4.0'
 gem 'ransack', :github => 'activerecord-hackery/ransack', :branch => 'main'
 gem 'pagy', '~> 9.0' # omit patch digit
+gem 'sweetalert-rails'
+
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"

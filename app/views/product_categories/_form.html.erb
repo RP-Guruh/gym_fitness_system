@@ -5,11 +5,11 @@
         <div class="row">
           <div class="col-md-6 col-sm-12">
             <div class="title">
-              <h4>Master data product</h4>
+              <h4>Category product</h4>
             </div>
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Master Data</a></li>
+                <li class="breadcrumb-item"><a href="index.html">Category</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Product</li>
               </ol>
             </nav>
@@ -20,8 +20,8 @@
     <div class="pd-20 card-box mb-30">
       <div class="clearfix">
         <div class="pull-left">
-          <h4 class="text-blue h4"><%= title %> master data produk</h4>
-          <p class="mb-30">Please fill in the product master data form</p>
+          <h4 class="text-blue h4"><%= title %> Category product</h4>
+          <p class="mb-30">Please fill in the product category form</p>
         </div>
       </div>
       <%= form_with(model: product_category, class: "contents") do |form| %>
@@ -36,19 +36,28 @@
           </div>
         <% end %>
         <div class="form-group row">
-          <label class="col-sm-12 col-md-2 col-form-label">Nama produk</label>
+          <label class="col-sm-12 col-md-2 col-form-label">Category Product Name</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.text_field :name, class: "form-control", placeholder: "Input product name", minlength: 3 %>
+            <%= form.text_field :name, class: "form-control", placeholder: "Input Category product name", minlength: 3, required: true %>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Deskripsi produk</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.text_area :description, rows: 4, class: "form-control" %>
+            <%= form.text_area :description, rows: 4, class: "form-control",placeholder: "Input Category product description" %>
           </div>
         </div>
         <div class="inline">
-          <%= form.submit "Simpan data", class: "btn btn-primary btn-lg" %>
+          <button class="btn btn-primary btn-lg" type="submit"
+        data-controller="confirmation"
+        data-action="click->confirmation#confirm"
+            data-confirmation-title-after-confirm-value="Save it!"
+            data-confirmation-text-after-confirm-value="Your file has been saved."
+            data-confirmation-confirm-button-text-value="save"
+            data-confirmation-message-value="Do you want to save this?"
+            >
+            Simpan Data
+          </button>
         </div>
         <%= link_to "Kembali", product_categories_path, class: "btn btn-warning btn-lg" %>
       <% end %>

@@ -12,4 +12,7 @@ import './plugins/datatables/js/dataTables.responsive.min';
 import './plugins/datatables/js/responsive.bootstrap4.min';
 import './dashboard';
 
-import 'datatables.net'
+
+import Swal from "sweetalert2"
+
+// Contoh penggunaan SweetAlert2

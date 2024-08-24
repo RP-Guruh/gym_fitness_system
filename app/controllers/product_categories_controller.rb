@@ -7,9 +7,13 @@ class ProductCategoriesController < ApplicationController
   def index
    
     @q = ProductCategory.ransack(params[:q])
-    # @product_categories = @q.result(distinct: true)
-    @pagy, @product_categories = pagy(@q.result(distinct: true), items: 10)
-
+    @product_categories = @q.result(distinct: true)
+    if @product_categories.empty?
+     
+    else
+      @pagy, @product_categories = pagy(@q.result(distinct: true), items: 10)
+    end
+    
   end
 
   # GET /product_categories/1 or /product_categories/1.json
@@ -28,10 +32,10 @@ class ProductCategoriesController < ApplicationController
   # POST /product_categories or /product_categories.json
   def create
     @product_category = ProductCategory.new(product_category_params)
-
+    @product_category.current_user = current_user
     respond_to do |format|
       if @product_category.save
-        format.html { redirect_to product_category_url(@product_category), notice: "Product category was successfully created." }
+        format.html { redirect_to product_categories_path, notice: "Product category was successfully created." }
         format.json { render :show, status: :created, location: @product_category }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -42,9 +46,10 @@ class ProductCategoriesController < ApplicationController
 
   # PATCH/PUT /product_categories/1 or /product_categories/1.json
   def update
+    @product_category.current_user = current_user
     respond_to do |format|
       if @product_category.update(product_category_params)
-        format.html { redirect_to product_category_url(@product_category), notice: "Product category was successfully updated." }
+        format.html { redirect_to product_categories_path, notice: "Product category was successfully updated." }
         format.json { render :show, status: :ok, location: @product_category }
       else
         format.html { render :edit, status: :unprocessable_entity }

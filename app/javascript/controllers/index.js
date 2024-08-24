@@ -4,5 +4,13 @@
 
 import { application } from "./application"
 
-import NotificationsController from "./notifications_controller"
-application.register("notifications", NotificationsController)
+
+import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
+eagerLoadControllersFrom("controllers", application)
+
+// import { NotificationsController } from "./notifications_controller"
+// application.register("notifications", NotificationsController)
+
+// Import SweetAlert2
+import Swal from "sweetalert2";
+application.register("confirmation", Swal);
