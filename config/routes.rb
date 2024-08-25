@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :villages
+  resources :districts
+  resources :regencies
+  resources :provinces
   resources :inventory_categories
   resources :product_categories
   devise_for :users

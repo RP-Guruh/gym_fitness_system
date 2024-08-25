@@ -1,12 +1,14 @@
 import { Controller } from '@hotwired/stimulus';
 import Swal from 'sweetalert2';
+import { Turbo } from "@hotwired/turbo-rails";
 
 export default class extends Controller {
   static values = {
     message: String,
     confirmButtonText: String,
     titleAfterConfirm: String,
-    textAfterConfirm: String
+    textAfterConfirm: String,
+    url: String
   };
 
   confirm(event) {
@@ -61,10 +63,34 @@ export default class extends Controller {
         text: this.textAfterConfirmValue,
         icon: "success"
       }).then(() => {
-        form.submit();       });
+        Turbo.visit(this.urlValue);
+      });
     })
     .catch(error => {
       console.error('Error:', error);
+    });
+  }
+
+  deleteForm(event) {
+    event.preventDefault(); // Mencegah pengiriman form otomatis
+    Swal.fire({
+      title: "Are you sure?",
+      text: this.messageValue,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, " + this.confirmButtonTextValue + " it!",
+    }).then((willDelete) => {
+      if (willDelete) {
+        Swal.fire({
+          title: this.titleAfterConfirmValue,
+          text: this.textAfterConfirmValue,
+          icon: "success",
+        }).then(() => {
+          this.element.closest("form").submit();
+        });
+      }
     });
   }
 }

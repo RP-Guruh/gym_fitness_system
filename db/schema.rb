@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_23_133520) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_25_143933) do
   create_table "class_packages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -22,6 +22,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_23_133520) do
     t.datetime "updated_at", null: false
     t.integer "created_by"
     t.index ["trainers_id"], name: "index_class_packages_on_trainers_id"
+  end
+
+  create_table "districts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "regency_id", null: false
+    t.string "name"
+    t.integer "created_by"
+    t.string "created_by_name"
+    t.integer "updated_by"
+    t.string "updated_by_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["regency_id"], name: "index_districts_on_regency_id"
   end
 
   create_table "inventories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -43,6 +55,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_23_133520) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by"
+    t.string "created_by_name"
+    t.integer "updated_by"
+    t.string "updated_by_name"
   end
 
   create_table "inventory_conditions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -137,6 +152,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_23_133520) do
     t.index ["product_category_id"], name: "index_products_on_product_category_id"
   end
 
+  create_table "provinces", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.integer "created_by"
+    t.string "created_by_name"
+    t.integer "updated_by"
+    t.string "updated_by_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "regencies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "province_id", null: false
+    t.string "name"
+    t.integer "created_by"
+    t.string "created_by_name"
+    t.integer "updated_by"
+    t.string "updated_by_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["province_id"], name: "index_regencies_on_province_id"
+  end
+
   create_table "register_transactions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "member_id", null: false
     t.bigint "membership_package_id", null: false
@@ -203,7 +240,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_23_133520) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "villages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "district_id", null: false
+    t.string "name"
+    t.integer "created_by"
+    t.string "created_by_name"
+    t.integer "updated_by"
+    t.string "updated_by_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["district_id"], name: "index_villages_on_district_id"
+  end
+
   add_foreign_key "class_packages", "trainers", column: "trainers_id"
+  add_foreign_key "districts", "regencies"
   add_foreign_key "inventories", "inventory_categories"
   add_foreign_key "inventory_conditions", "inventories"
   add_foreign_key "member_classes", "class_packages"
@@ -211,7 +261,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_23_133520) do
   add_foreign_key "members", "users", column: "users_id"
   add_foreign_key "product_transactions", "products"
   add_foreign_key "products", "product_categories"
+  add_foreign_key "regencies", "provinces"
   add_foreign_key "register_transactions", "members"
   add_foreign_key "register_transactions", "membership_packages"
   add_foreign_key "trainers", "users", column: "users_id"
+  add_foreign_key "villages", "districts"
 end

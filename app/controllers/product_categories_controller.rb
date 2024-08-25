@@ -7,6 +7,7 @@ class ProductCategoriesController < ApplicationController
   def index
    
     @q = ProductCategory.ransack(params[:q])
+    @q.sorts = "created_at desc" if @q.sorts.empty?
     @product_categories = @q.result(distinct: true)
     if @product_categories.empty?
      

@@ -35,9 +35,9 @@
         </tr>
       </thead>
       <tbody>
-        <% @product_categories.each do |product| %>
+        <% @product_categories.each_with_index do |product, index| %>
           <tr>
-            <td><%= product.id %></td>
+            <td> <%= @pagy.offset + index + 1  %> </td>
             <td><%= highlight product.name, params.dig(:q, :name_cont) %> </td>
             <td><%= product.description %></td>
             <td>
@@ -62,8 +62,22 @@
                   <i class="dw dw-more"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                  <%= button_to "Delete", product, method: :delete, data: { confirm_swal: "Are you sure you want to delete this?" } %>
-                  <%= link_to "Edit", edit_product_category_path(product), data: { turbo_frame: "product_category_form", turbo_stream: true }, class: "dropdown-item" %>
+                  <%= button_to product_category_path(product), method: :delete, form_class: 'delete-button', class:"dropdown-item", data: { 
+                      controller: "confirmation", 
+                      action: "click->confirmation#deleteForm", 
+                      confirmation_title_after_confirm_value: "Delete it!",
+                      confirmation_text_after_confirm_value: "Your data has been deleted.",
+                      confirmation_confirm_button_text_value: "Delete",
+                      confirmation_message_value: "Do you want to delete this?",
+                      confirmation_type_value: "delete"
+                    } do %>
+                    <i class="dw dw-delete-3"></i> Delete
+                  <% end %>
+                  <%= link_to edit_product_category_path(product), 
+                    data: { turbo_frame: "product_category_form", turbo_stream: true }, 
+                    class: "dropdown-item" do %>
+                    <i class="dw dw-edit2"></i> Edit
+                  <% end %>
                 </div>
               </div>
             </td>
