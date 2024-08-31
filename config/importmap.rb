@@ -7,3 +7,4 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "@stimulus-components/notification", to: "@stimulus-components--notification.js" # @3.0.0
 pin "sweetalert2" # @11.12.4
+pin "slim-select" # @2.8.2

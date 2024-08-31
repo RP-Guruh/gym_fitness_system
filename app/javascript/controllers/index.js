@@ -14,3 +14,5 @@ eagerLoadControllersFrom("controllers", application)
 // Import SweetAlert2
 import Swal from "sweetalert2";
 application.register("confirmation", Swal);
+
+application.register("select_option_slim");

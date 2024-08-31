@@ -1,21 +1,95 @@
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <% content_for :title, "Regencies" %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Regencies</h1>
-    <%= link_to "New regency", new_regency_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
-  </div>
-
-  <div id="regencies" class="min-w-full">
-    <% @regencies.each do |regency| %>
-      <%= render regency %>
-      <p>
-        <%= link_to "Show this regency", regency, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
+<div class="main-container">
+  <!-- basic table  Start -->
+  <div class="pd-20 card-box mb-30">
+    <div class="clearfix mb-20">
+      <div class="pull-left">
+        <h4 class="text-blue h4">Master data regency</h4>
+      </div>
+      <div class="pull-right">
+        <%= link_to "Add new data", new_regency_path, class: "btn btn-primary btn-sm scroll-click", data: {turbo_stream: true}%>
+      </div>
+    </div>
+    <div class="mt-4">
+      <div class="flex items-center space-x-2">
+        <%= search_form_for @q, url: regencies_path, method: :get, data: { turbo_frame: "regency" } do |f| %>
+          <%= f.search_field :name_cont, class: "", placeholder: "Search Here" %>
+          <%= f.date_field(:created_at_eq, placeholder: t(:date_format)) %>
+          <%= f.submit "Search", class: "btn btn-primary btn-sm px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600" %>
+        <% end %>
+      </div>
+    </div>
+    <table class="table mt-4">
+      <% if @regencies.count >= 1 %>
+        <div class="d-flex justify-content-end">
+          <%== pagy_bootstrap_nav(@pagy) %>
+        </div>
+      <% end %>
+      <thead>
+        <tr>
+          <th scope="col"> <%= sort_link(@q, :id, '#', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :name, 'Regency', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :name, 'Province', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :created_at, 'Created at & by', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :updated_at, 'Updated at & by', default_order: :desc) %></th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @regencies.each_with_index do |regency, index| %>
+          <tr>
+            <td> <%= @pagy.offset + index + 1  %> </td>
+            <td><%= highlight regency.name, params.dig(:q, :name_cont) %> </td>
+            <td><%= highlight province_name(regency.province_id), params.dig(:q, :province_id_cont) %> </td>
+            <td>
+              <%= regency.created_at.strftime("%d %B %Y %H:%M") %>
+              <div class="d-block">
+                <span class="rows">
+                  <%= regency.created_by_name %>
+                </span>
+              </div>
+            </td>
+            <td>
+              <%= regency.updated_at.strftime("%d %B %Y %H:%M") %>
+              <div class="d-block">
+                <span class="rows">
+                  <%= regency.updated_by_name || "-" %>
+                </span>
+              </div>
+            </td>
+            <td>
+              <div class="dropdown">
+                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                  <i class="dw dw-more"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                  <%= link_to edit_regency_path(regency), 
+                    data: { turbo_frame: "regency_form", turbo_stream: true }, 
+                    class: "dropdown-item" do %>
+                    <i class="dw dw-edit2"></i> Edit
+                  <% end %>
+                  <%= button_to regency_path(regency), method: :delete, form_class: 'delete-button', class:"dropdown-item", data: { 
+                      controller: "confirmation", 
+                      action: "click->confirmation#deleteForm", 
+                      confirmation_title_after_confirm_value: "Delete it!",
+                      confirmation_text_after_confirm_value: "Your data has been deleted.",
+                      confirmation_confirm_button_text_value: "Delete",
+                      confirmation_message_value: "Do you want to delete this?",
+                      confirmation_type_value: "delete"
+                    } do %>
+                    <i class="dw dw-delete-3"></i> Delete
+                  <% end %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @regencies.count >= 1 %>
+      <div class="d-flex justify-content-end">
+        <%== pagy_bootstrap_nav(@pagy) %>
+      </div>
     <% end %>
   </div>
+  <!-- basic table  End -->
 </div>

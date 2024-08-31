@@ -27,13 +27,13 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 gem "sassc-rails"
-gem 'devise', '~> 4.9', '>= 4.9.4'
-gem 'foreman', github: 'ddollar/foreman'
-gem 'ajax-datatables-rails', '~> 0.4.0'
-gem 'ransack', :github => 'activerecord-hackery/ransack', :branch => 'main'
-gem 'pagy', '~> 9.0' # omit patch digit
-gem 'sweetalert-rails'
-
+gem "devise", "~> 4.9", ">= 4.9.4"
+gem "foreman", github: "ddollar/foreman"
+gem "ajax-datatables-rails", "~> 0.4.0"
+gem "ransack", :github => "activerecord-hackery/ransack", :branch => "main"
+gem "pagy", "~> 9.0" # omit patch digit
+gem "sweetalert-rails"
+gem "view_component", "~> 3.14"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"

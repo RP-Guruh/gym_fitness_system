@@ -1,9 +1,16 @@
 class RegenciesController < ApplicationController
+  include Pagy::Backend
   before_action :set_regency, only: %i[ show edit update destroy ]
 
   # GET /regencies or /regencies.json
   def index
-    @regencies = Regency.all
+    @q = Regency.ransack(params[:q])
+    @q.sorts = "created_at desc" if @q.sorts.empty?
+    @regencies = @q.result(distinct: true)
+    if @regencies.empty?
+    else
+      @pagy, @regencies = pagy(@q.result(distinct: true), items: 10)
+    end
   end
 
   # GET /regencies/1 or /regencies/1.json
@@ -13,16 +20,18 @@ class RegenciesController < ApplicationController
   # GET /regencies/new
   def new
     @regency = Regency.new
+    @province = get_province
   end
 
   # GET /regencies/1/edit
   def edit
+    @province = get_province
   end
 
   # POST /regencies or /regencies.json
   def create
     @regency = Regency.new(regency_params)
-
+    @regency.current_user = current_user
     respond_to do |format|
       if @regency.save
         format.html { redirect_to regency_url(@regency), notice: "Regency was successfully created." }
@@ -36,6 +45,7 @@ class RegenciesController < ApplicationController
 
   # PATCH/PUT /regencies/1 or /regencies/1.json
   def update
+    @regency.current_user = current_user
     respond_to do |format|
       if @regency.update(regency_params)
         format.html { redirect_to regency_url(@regency), notice: "Regency was successfully updated." }
@@ -58,13 +68,18 @@ class RegenciesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_regency
-      @regency = Regency.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def regency_params
-      params.require(:regency).permit(:name, :created_by, :created_by_name, :updated_by, :updated_by_name)
-    end
+  def get_province
+    @data = Province.order(:name).all
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_regency
+    @regency = Regency.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def regency_params
+    params.require(:regency).permit(:name, :province_id)
+  end
 end

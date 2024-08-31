@@ -1,42 +1,60 @@
-<%= form_with(model: province, class: "contents") do |form| %>
-  <% if province.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(province.errors.count, "error") %> prohibited this province from being saved:</h2>
-
-      <ul>
-        <% province.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<div class="main-container">
+  <div class="">
+    <div class="min-height-50px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <div class="title">
+              <h4>Province</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Province</a></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <div class="my-5">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <div class="pd-20 card-box mb-30">
+      <div class="clearfix">
+        <div class="pull-left">
+          <h4 class="text-blue h4"><%= title %> Province list</h4>
+          <p class="mb-30">Please fill in the province name</p>
+        </div>
+      </div>
+      <%= form_with(model: province, class: "contents") do |form| %>
+        <% if province.errors.any? %>
+          <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+            <h2><%= pluralize(province.errors.count, "error") %> prohibited this province from being saved:</h2>
+            <ul>
+              <% province.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Province Name</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.text_field :name, class: "form-control", placeholder: "Input province name", minlength: 3, required: true %>
+          </div>
+        </div>
+        <div class="inline">
+          <button class="btn btn-primary btn-lg" type="submit"
+        data-controller="confirmation"
+        data-action="click->confirmation#confirm"
+            data-confirmation-title-after-confirm-value="Save it!"
+            data-confirmation-text-after-confirm-value="Your file has been saved."
+            data-confirmation-confirm-button-text-value="save"
+            data-confirmation-message-value="Do you want to save this?"
+            data-confirmation-url-value="/provinces"
+            >
+            Simpan Data
+          </button>
+        </div>
+        <%= link_to "Kembali", provinces_path, class: "btn btn-warning btn-lg" %>
+      <% end %>
+    </div>
   </div>
-
-  <div class="my-5">
-    <%= form.label :created_by %>
-    <%= form.number_field :created_by, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :created_by_name %>
-    <%= form.text_field :created_by_name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :updated_by %>
-    <%= form.number_field :updated_by, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :updated_by_name %>
-    <%= form.text_field :updated_by_name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
-  </div>
-<% end %>
+</div>
