@@ -1,102 +1,126 @@
-<%= form_with(model: employee, class: "contents") do |form| %>
-  <% if employee.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
-
-      <ul>
-        <% employee.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<div class="main-container">
+  <div class="">
+    <div class="min-height-50px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <div class="title">
+              <h4>Employee</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Employee</a></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <div class="my-5">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <div class="pd-20 card-box mb-30">
+      <div class="clearfix">
+        <div class="pull-left">
+          <h4 class="text-blue h4"><%= title %> Employee list</h4>
+          <p class="mb-30">Please fill in the Employee</p>
+        </div>
+      </div>
+      <%= form_with(model: employee, class: "contents") do |form| %>
+        <% if employee.errors.any? %>
+          <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+            <h2><%= pluralize(employee.errors.count, "error") %> prohibited this province from being saved:</h2>
+            <ul>
+              <% employee.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">First Name *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.text_field :first_name, class: "form-control", placeholder: "Input first name", minlength: 3, required: true %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Last Name *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.text_field :last_name, class: "form-control", placeholder: "Input last name", minlength: 3, required: true %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Position *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :job_title, @positions.map { |value, key| [value, key] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Gender *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :gender, @genders.map { |value, key| [value, key] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Date of birth *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.date_select :date_of_birth, 
+                     start_year: 1960, 
+                     end_year: Date.today.year, 
+                     order: [:day, :month, :year], 
+                     prompt: { day: 'Choose date', month: 'Choose month', year: 'Choose year' },
+                     class: 'form-control',
+                     data: { controller: 'select-option-slim' } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Hire Date *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.date_select :hire_date, 
+                     start_year: 2020, 
+                     end_year: Date.today.year, 
+                     order: [:day, :month, :year], 
+                     prompt: { day: 'Choose date', month: 'Choose month', year: 'Choose year' },
+                     class: 'form-control',
+                     data: { controller: 'select-option-slim' } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Email *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.email_field :email, class: "form-control", placeholder: "Input employee email address",required: true %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Address *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.text_area :address,size: "70x5", class: "form-control", placeholder: "Input employee address",required: true %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Photo</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.file_field :employee_photo, class: "form-control" %>
+          </div>
+        </div>
+        <div class="inline">
+          <button class="btn btn-primary btn-lg" type="submit"
+        data-controller="confirmation"
+        data-action="click->confirmation#confirm"
+            data-confirmation-title-after-confirm-value="Save it!"
+            data-confirmation-text-after-confirm-value="Your file has been saved."
+            data-confirmation-confirm-button-text-value="save"
+            data-confirmation-message-value="Do you want to save this?"
+            data-confirmation-url-value="/employees"
+            >
+            Simpan Data
+          </button>
+        </div>
+        <%= link_to "Kembali", employees_path, class: "btn btn-warning btn-lg" %>
+      <% end %>
+    </div>
   </div>
-
-  <div class="my-5">
-    <%= form.label :employee_id %>
-    <%= form.text_field :employee_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :first_name %>
-    <%= form.text_field :first_name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :last_name %>
-    <%= form.text_field :last_name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :date_of_birth %>
-    <%= form.date_field :date_of_birth, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :gender %>
-    <%= form.text_field :gender, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :photo %>
-    <%= form.text_field :photo, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :photo_size %>
-    <%= form.number_field :photo_size, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :photo_extension %>
-    <%= form.text_field :photo_extension, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :address %>
-    <%= form.text_area :address, rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :email %>
-    <%= form.text_field :email, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :hire_date %>
-    <%= form.date_field :hire_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :job_title %>
-    <%= form.text_field :job_title, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :created_by %>
-    <%= form.number_field :created_by, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :created_by_name %>
-    <%= form.text_field :created_by_name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :updated_by %>
-    <%= form.number_field :updated_by, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :updated_by_name %>
-    <%= form.text_field :updated_by_name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
-  </div>
-<% end %>
+</div>

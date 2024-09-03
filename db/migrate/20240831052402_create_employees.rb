@@ -7,9 +7,6 @@ class CreateEmployees < ActiveRecord::Migration[7.1]
       t.string :last_name
       t.date :date_of_birth
       t.string :gender
-      t.string :photo
-      t.integer :photo_size
-      t.string :photo_extension
       t.text :address
       t.string :email
       t.date :hire_date

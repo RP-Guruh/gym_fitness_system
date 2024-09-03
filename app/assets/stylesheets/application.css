@@ -31,3 +31,10 @@
 .notification.show {
     opacity: 1;
 }
+
+.image_rounded {
+    width: 100px; /* Sesuaikan ukuran sesuai kebutuhan */
+    height: 100px; /* Sesuaikan ukuran sesuai kebutuhan */
+    border-radius: 100%;
+    object-fit: cover; /* Memastikan gambar tidak terdistorsi */
+  }

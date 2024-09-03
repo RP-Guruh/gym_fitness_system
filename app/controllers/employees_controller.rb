@@ -1,9 +1,16 @@
 class EmployeesController < ApplicationController
+  include Pagy::Backend
   before_action :set_employee, only: %i[ show edit update destroy ]
 
   # GET /employees or /employees.json
   def index
-    @employees = Employee.all
+    @q = Employee.ransack(params[:q])
+    @q.sorts = "created_at desc" if @q.sorts.empty?
+    @employees = @q.result(distinct: true)
+    if @employees.empty?
+    else
+      @pagy, @employees = pagy(@q.result(distinct: true), items: 10)
+    end
   end
 
   # GET /employees/1 or /employees/1.json
@@ -13,6 +20,12 @@ class EmployeesController < ApplicationController
   # GET /employees/new
   def new
     @employee = Employee.new
+    @genders = [["Laki-Laki", "L"], ["Perempuan", "P"]]
+    @positions = [
+      ["Receptionist", "receptionist"],
+      ["Owner", "owner"],
+      ["Cashier", "cashier"],
+    ]
   end
 
   # GET /employees/1/edit
@@ -22,7 +35,7 @@ class EmployeesController < ApplicationController
   # POST /employees or /employees.json
   def create
     @employee = Employee.new(employee_params)
-
+    @employee.current_user = current_user
     respond_to do |format|
       if @employee.save
         format.html { redirect_to employee_url(@employee), notice: "Employee was successfully created." }
@@ -36,6 +49,7 @@ class EmployeesController < ApplicationController
 
   # PATCH/PUT /employees/1 or /employees/1.json
   def update
+    @employee.current_user = current_user
     respond_to do |format|
       if @employee.update(employee_params)
         format.html { redirect_to employee_url(@employee), notice: "Employee was successfully updated." }
@@ -58,13 +72,14 @@ class EmployeesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_employee
-      @employee = Employee.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def employee_params
-      params.require(:employee).permit(:user_id, :employee_id, :first_name, :last_name, :date_of_birth, :gender, :photo, :photo_size, :photo_extension, :address, :email, :hire_date, :job_title, :created_by, :created_by_name, :updated_by, :updated_by_name)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_employee
+    @employee = Employee.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def employee_params
+    params.require(:employee).permit(:employee_photo, :first_name, :last_name, :date_of_birth, :gender, :address, :email, :hire_date, :job_title)
+  end
 end
