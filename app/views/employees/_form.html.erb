@@ -103,7 +103,12 @@
         <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Photo</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.file_field :employee_photo, class: "form-control" %>
+            <%= form.file_field :employee_photo,
+                    accept: "image/png, image/jpeg",
+                    data: { controller: 'filepond', 
+                    filepond_target: 'input',
+                    direct_upload_url: rails_direct_uploads_url
+            }%>
           </div>
         </div>
         <div class="inline">

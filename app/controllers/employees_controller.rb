@@ -15,21 +15,19 @@ class EmployeesController < ApplicationController
 
   # GET /employees/1 or /employees/1.json
   def show
+    get_master_data
   end
 
   # GET /employees/new
   def new
     @employee = Employee.new
-    @genders = [["Laki-Laki", "L"], ["Perempuan", "P"]]
-    @positions = [
-      ["Receptionist", "receptionist"],
-      ["Owner", "owner"],
-      ["Cashier", "cashier"],
-    ]
+    get_master_data
   end
 
   # GET /employees/1/edit
   def edit
+    @genders = [["Laki-Laki", "L"], ["Perempuan", "P"]]
+    get_master_data
   end
 
   # POST /employees or /employees.json
@@ -81,5 +79,14 @@ class EmployeesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def employee_params
     params.require(:employee).permit(:employee_photo, :first_name, :last_name, :date_of_birth, :gender, :address, :email, :hire_date, :job_title)
+  end
+
+  def get_master_data
+    @genders = [["Laki-Laki", "L"], ["Perempuan", "P"]]
+    @positions = [
+      ["Receptionist", "receptionist"],
+      ["Owner", "owner"],
+      ["Cashier", "cashier"],
+    ]
   end
 end

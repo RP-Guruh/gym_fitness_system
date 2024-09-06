@@ -35,7 +35,7 @@ gem "pagy", "~> 9.0" # omit patch digit
 gem "sweetalert-rails"
 gem "view_component", "~> 3.14"
 gem "image_processing", "~> 1.12", ">= 1.12.2"
-
+gem "filepond-rails", "~> 1.0", ">= 1.0.1"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

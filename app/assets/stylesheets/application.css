@@ -13,6 +13,7 @@
  *= require_tree .
  *= require sweetalert
  *= require_self
+ *= require 'filepond'
  */
 /* app/assets/stylesheets/application.css */
 

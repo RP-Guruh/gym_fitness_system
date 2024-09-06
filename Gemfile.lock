@@ -132,6 +132,8 @@ GEM
     ffi (1.17.0-x86-linux-gnu)
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
+    filepond-rails (1.0.1)
+      rails (>= 7.0, < 8)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.5)
@@ -332,6 +334,7 @@ DEPENDENCIES
   capybara
   debug
   devise (~> 4.9, >= 4.9.4)
+  filepond-rails (~> 1.0, >= 1.0.1)
   foreman!
   image_processing (~> 1.12, >= 1.12.2)
   importmap-rails

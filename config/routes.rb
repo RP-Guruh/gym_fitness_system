@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # FilePond endpoints
+  post "filepond/fetch", to: "filepond#fetch"
+  delete "filepond/remove", to: "filepond#remove"
+  resources :attachment, only: [:create, :destroy]
   resources :employees
   resources :villages
   resources :districts
@@ -7,7 +11,7 @@ Rails.application.routes.draw do
   resources :inventory_categories
   resources :product_categories
   devise_for :users
-  get 'dashboard/index'
+  get "dashboard/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -16,8 +20,18 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   devise_scope :user do
-    root to:  'devise/sessions#new'
+    root to: "devise/sessions#new"
   end
 
   get "/dashboard", to: "dashboard#index", as: :dashboard
+
+  # frozen_string_literal: true
+
+  # Filepond::Rails::Engine.routes.draw do
+  #   # https://pqina.nl/filepond/docs/api/server/#fetch
+  #   post "active_storage/fetch", to: "ingress#fetch"
+
+  #   # https://pqina.nl/filepond/docs/api/server/#remove
+  #   delete "active_storage/remove", to: "ingress#remove"
+  # end
 end
