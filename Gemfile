@@ -79,3 +79,5 @@ end
 gem "tailwindcss-rails", "~> 2.7"
 
 gem "jquery-datatables", "~> 1.10"
+
+gem "pundit", "~> 2.4"

@@ -2,10 +2,12 @@ class ProvincesController < ApplicationController
   include Pagy::Backend
 
   before_action :set_province, only: %i[ show edit update destroy ]
+  before_action -> { check_policy(Province) }, only: [:show, :edit, :new, :destroy]
 
   # GET /provinces or /provinces.json
   def index
-    @q = Province.ransack(params[:q])
+    province_scope = policy_scope(Province)
+    @q = province_scope.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @provinces = @q.result(distinct: true)
     if @provinces.empty?

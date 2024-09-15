@@ -1,10 +1,13 @@
 class InventoryCategoriesController < ApplicationController
   include Pagy::Backend
   before_action :set_inventory_category, only: %i[ show edit update destroy ]
+  before_action -> { check_policy(InventoryCategory) }, only: [:edit, :new, :destroy]
 
   # GET /inventory_categories or /inventory_categories.json
   def index
-    @q = InventoryCategory.ransack(params[:q])
+    inventory_category_scope = policy_scope(InventoryCategory)
+
+    @q = inventory_category_scope.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @inventory_categories = @q.result(distinct: true)
     if @inventory_categories.empty?

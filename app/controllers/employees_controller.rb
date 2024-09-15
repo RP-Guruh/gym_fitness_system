@@ -1,10 +1,12 @@
 class EmployeesController < ApplicationController
   include Pagy::Backend
-  before_action :set_employee, only: %i[ show edit update destroy ]
-
+  before_action :set_employee, only: %i[show edit update destroy]
+  before_action -> { check_policy(Employee) }, only: [:show, :edit, :new, :destroy]
   # GET /employees or /employees.json
   def index
-    @q = Employee.ransack(params[:q])
+    employees_scope = policy_scope(Employee)
+
+    @q = employees_scope.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @employees = @q.result(distinct: true)
     if @employees.empty?
@@ -62,7 +64,6 @@ class EmployeesController < ApplicationController
   # DELETE /employees/1 or /employees/1.json
   def destroy
     @employee.destroy!
-
     respond_to do |format|
       format.html { redirect_to employees_url, notice: "Employee was successfully destroyed." }
       format.json { head :no_content }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_03_134319) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_08_140553) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -65,15 +65,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_03_134319) do
   end
 
   create_table "employees", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.string "employee_id"
     t.string "first_name"
     t.string "last_name"
     t.date "date_of_birth"
     t.string "gender"
-    t.string "photo"
-    t.integer "photo_size"
-    t.string "photo_extension"
     t.text "address"
     t.string "email"
     t.date "hire_date"
@@ -164,6 +161,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_03_134319) do
     t.integer "created_by"
   end
 
+  create_table "permissions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "action"
+    t.string "resource"
+    t.bigint "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.string "created_by_name"
+    t.integer "updated_by"
+    t.string "updated_by_name"
+    t.index ["role_id"], name: "index_permissions_on_role_id"
+  end
+
   create_table "product_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -243,6 +253,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_03_134319) do
     t.index ["membership_package_id"], name: "index_register_transactions_on_membership_package_id"
   end
 
+  create_table "roles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "key"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.string "created_by_name"
+    t.integer "updated_by"
+    t.string "updated_by_name"
+  end
+
   create_table "tests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -291,9 +312,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_03_134319) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "role", default: "owner"
+    t.bigint "role_id", default: 1, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   create_table "villages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -318,11 +340,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_03_134319) do
   add_foreign_key "member_classes", "class_packages"
   add_foreign_key "member_classes", "members"
   add_foreign_key "members", "users", column: "users_id"
+  add_foreign_key "permissions", "roles"
   add_foreign_key "product_transactions", "products"
   add_foreign_key "products", "product_categories"
   add_foreign_key "regencies", "provinces"
   add_foreign_key "register_transactions", "members"
   add_foreign_key "register_transactions", "membership_packages"
   add_foreign_key "trainers", "users", column: "users_id"
+  add_foreign_key "users", "roles"
   add_foreign_key "villages", "districts"
 end

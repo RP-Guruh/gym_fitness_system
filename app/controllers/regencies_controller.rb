@@ -1,10 +1,11 @@
 class RegenciesController < ApplicationController
   include Pagy::Backend
   before_action :set_regency, only: %i[ show edit update destroy ]
-
+  before_action -> { check_policy(Regency) }, only: [:edit, :new, :destroy]
   # GET /regencies or /regencies.json
   def index
-    @q = Regency.ransack(params[:q])
+    regency_scope = policy_scope(Regency)
+    @q = regency_scope.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @regencies = @q.result(distinct: true)
     if @regencies.empty?

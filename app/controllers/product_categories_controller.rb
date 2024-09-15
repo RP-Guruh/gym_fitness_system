@@ -1,20 +1,17 @@
-
 class ProductCategoriesController < ApplicationController
   include Pagy::Backend
   before_action :set_product_category, only: %i[ show edit update destroy ]
-
+  before_action -> { check_policy(ProductCategory) }, only: [:edit, :new, :destroy]
   # GET /product_categories or /product_categories.json
   def index
-   
-    @q = ProductCategory.ransack(params[:q])
+    product_category_scope = policy_scope(ProductCategory)
+    @q = product_category_scope.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @product_categories = @q.result(distinct: true)
     if @product_categories.empty?
-     
     else
       @pagy, @product_categories = pagy(@q.result(distinct: true), items: 10)
     end
-    
   end
 
   # GET /product_categories/1 or /product_categories/1.json
@@ -70,13 +67,14 @@ class ProductCategoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_product_category
-      @product_category = ProductCategory.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def product_category_params
-      params.require(:product_category).permit(:name, :description)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_product_category
+    @product_category = ProductCategory.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def product_category_params
+    params.require(:product_category).permit(:name, :description)
+  end
 end

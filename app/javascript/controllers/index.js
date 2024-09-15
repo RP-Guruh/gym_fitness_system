@@ -16,3 +16,5 @@ import Swal from "sweetalert2";
 application.register("confirmation", Swal);
 
 application.register("select_option_slim");
+
+application.register("dropdown", DropdownController)
