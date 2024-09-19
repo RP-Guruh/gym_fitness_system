@@ -1,0 +1,68 @@
+<div class="main-container">
+  <!-- basic table  Start -->
+  <div class="pd-20 card-box mb-30">
+    <div class="clearfix mb-20">
+      <div class="pull-left">
+        <h4 class="text-blue h4">List Account</h4>
+      </div>
+      <div class="pull-right">
+        <%= link_to "Add new data", new_account_configuration_path, class: "btn btn-primary btn-sm scroll-click", data: {turbo_stream: true}%>
+      </div>
+    </div>
+    <div class="mt-4">
+      <div class="flex items-center space-x-2">
+        <%= search_form_for @q, url: account_configurations_path, method: :get, data: { turbo_frame: "account" } do |f| %>
+          <%= f.search_field :email_cont, class: "", placeholder: "Search Here" %>
+          <%= f.date_field(:created_at_eq, placeholder: t(:date_format)) %>
+          <%= f.submit "Search", class: "btn btn-primary btn-sm px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600" %>
+        <% end %>
+      </div>
+    </div>
+    <table class="table mt-4">
+      <% if @users.count >= 1 %>
+        <div class="d-flex justify-content-end">
+          <%== pagy_bootstrap_nav(@pagy) %>
+        </div>
+      <% end %>
+      <thead>
+        <tr>
+          <th scope="col"> <%= sort_link(@q, :id, '#', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :email, 'Email', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :role_id, 'Role', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :created_at, 'Created at', default_order: :desc) %></th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each_with_index do |user, index| %>
+          <tr>
+            <td> <%= @pagy.offset + index + 1  %> </td>
+            <td><%= highlight user.email, params.dig(:q, :first_email_cont) %> </td>
+            <td> <%= role_name(user.role_id) %> </td>
+            <td> <%= user.created_at %> </td>
+            <td>
+              <div class="dropdown">
+                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                  <i class="dw dw-more"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                  <%= link_to edit_account_configuration_path(user), 
+                    data: { turbo_frame: "user_form", turbo_stream: true }, 
+                    class: "dropdown-item" do %>
+                    <i class="dw dw-edit2"></i> Edit
+                  <% end %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @users.count >= 1 %>
+      <div class="d-flex justify-content-end">
+        <%== pagy_bootstrap_nav(@pagy) %>
+      </div>
+    <% end %>
+  </div>
+  <!-- basic table  End -->
+</div>

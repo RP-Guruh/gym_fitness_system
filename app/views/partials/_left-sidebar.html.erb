@@ -42,6 +42,10 @@
             <span class="mtext">Permission</span>
           <% end %>
         <% end %>
+        <%= link_to account_configurations_path, class: "dropdown-toggle", data: { turbo: "true" } do %>
+          <span class="micon dw dw-user-2"></span>
+          <span class="mtext">Account User</span>
+        <% end %>
         <li>
           <div class="dropdown-divider"></div>
         </li>

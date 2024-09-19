@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   resources :provinces
   resources :inventory_categories
   resources :product_categories
+  resources :account_configurations, only: [:index, :new, :create, :edit, :update, :generate_new_password]
+  get "generate_new_password" => "account_configurations#generate_new_password"
+
   devise_for :users
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

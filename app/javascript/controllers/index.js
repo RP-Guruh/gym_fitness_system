@@ -18,3 +18,6 @@ application.register("confirmation", Swal);
 application.register("select_option_slim");
 
 application.register("dropdown", DropdownController)
+
+application.register("copiedtext");
+application.register("generate-password");

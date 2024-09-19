@@ -5,4 +5,4 @@
 //= link_tree ../../../vendor/scripts .js
 //= link_tree ../builds
 //= link controllers/notifications_controller.js
-
+//= link controllers/copiedtext_controller.js

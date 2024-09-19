@@ -1,0 +1,74 @@
+<div class="main-container">
+  <div class="">
+    <div class="min-height-50px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <div class="title">
+              <h4>Account</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Account</a></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pd-20 card-box mb-30">
+      <div class="clearfix">
+        <div class="pull-left">
+          <h4 class="text-blue h4"><%= title %> Account list</h4>
+          <p class="mb-30">Please fill in the Account</p>
+        </div>
+      </div>
+      <%= form_with(model: user, url: account_configurations_path(user), class: "contents") do |form| %>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Email *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.email_field :email, class: "form-control", placeholder: "Input account email address",required: true %>
+          </div>
+        </div>
+        <div class="form-group row mt-8">
+          <label class="col-sm-12 col-md-2 col-form-label">Password *</label>
+          <div data-controller="copiedtext" class="input-group bootstrap-touchspin bootstrap-touchspin-injected col-sm-4 col-md-4">
+            <span class="input-group-btn input-group-append">
+              <button type="button" class="btn btn-primary bootstrap-touchspin-up" data-action="copiedtext#generate">
+                Generate
+              </button>
+            </span>
+            <%= form.text_field :password, class: "form-control", data: { copiedtext_target: "source" } %>
+            <span class="input-group-btn input-group-append"><button type="button" class="btn btn-primary bootstrap-touchspin-up" data-action="copiedtext#copy">Copy</button></span>
+            <small class="form-text text-muted">
+              Copy terlebih dahulu password, sebelum di save
+            </small>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Role *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :role_id, @roles.map { |role| [role_name(role.id), role.id] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="inline">
+          <button class="btn btn-primary btn-lg" type="submit"
+        data-controller="confirmation"
+        data-action="click->confirmation#confirm"
+            data-confirmation-title-after-confirm-value="Save it!"
+            data-confirmation-text-after-confirm-value="Your file has been saved."
+            data-confirmation-confirm-button-text-value="save"
+            data-confirmation-message-value="Do you want to save this?"
+            data-confirmation-url-value="/account_configurations"
+            >
+            Simpan Data
+          </button>
+        </div>
+        <%= link_to "Kembali", account_configurations_path, class: "btn btn-warning btn-lg" %>
+      <% end %>
+    </div>
+  </div>
+</div>
