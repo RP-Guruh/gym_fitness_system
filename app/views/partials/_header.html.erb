@@ -107,7 +107,11 @@
       <div class="dropdown">
         <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
           <span class="user-icon">
-            <img src="vendors/images/photo1.jpg" alt="">
+            <% if current_user.employee && current_user.employee.employee_photo.attached? %>
+              <%= image_tag current_user.employee.employee_photo.variant(resize_to_limit: [100, nil]), alt: "Employee Photo" %>
+            <% else %>
+              <img src="vendors/images/photo1.jpg" alt="">
+            <% end %>
           </span>
           <span class="user-name"><%= current_user.email %></span>
         </a>

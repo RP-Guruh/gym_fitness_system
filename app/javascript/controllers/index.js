@@ -21,3 +21,4 @@ application.register("dropdown", DropdownController)
 
 application.register("copiedtext");
 application.register("generate-password");
+application.register("employee");

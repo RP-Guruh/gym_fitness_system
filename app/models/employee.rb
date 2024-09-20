@@ -1,5 +1,5 @@
 class Employee < ApplicationRecord
-  #belongs_to :user
+  belongs_to :user
   has_one_attached :employee_photo
 
   include SaveName

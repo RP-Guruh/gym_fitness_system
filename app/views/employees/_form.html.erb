@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="main-container" data-controller="employee">
   <div class="">
     <div class="min-height-50px">
       <div class="page-header">
@@ -56,6 +56,15 @@
           </div>
         </div>
         <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Account *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :user_id, @accounts.map { |account| [account.email, account.id] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim', action: 'change->employee#getAccountSelected' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Gender *</label>
           <div class="col-sm-12 col-md-10">
             <%= form.select :gender, @genders.map { |value, key| [value, key] },
@@ -91,7 +100,7 @@
         <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Email *</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.email_field :email, class: "form-control", placeholder: "Input employee email address",required: true %>
+            <%= form.email_field :email, class: "form-control", placeholder: "Input employee email address", required: true, data: { employee_target: 'email' } %>
           </div>
         </div>
         <div class="form-group row">

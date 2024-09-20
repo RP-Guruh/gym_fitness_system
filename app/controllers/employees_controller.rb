@@ -23,6 +23,7 @@ class EmployeesController < ApplicationController
   # GET /employees/new
   def new
     @employee = Employee.new
+    @accounts = User.all
     get_master_data
   end
 
@@ -79,7 +80,7 @@ class EmployeesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def employee_params
-    params.require(:employee).permit(:employee_photo, :first_name, :last_name, :date_of_birth, :gender, :address, :email, :hire_date, :job_title)
+    params.require(:employee).permit(:employee_photo, :first_name, :last_name, :user_id, :date_of_birth, :gender, :address, :email, :hire_date, :job_title)
   end
 
   def get_master_data
