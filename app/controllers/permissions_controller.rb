@@ -108,6 +108,7 @@ class PermissionsController < ApplicationController
       "ProductCategory",
       "User",
       "Permission",
+      "MembershipPackage",
     ]
   end
 

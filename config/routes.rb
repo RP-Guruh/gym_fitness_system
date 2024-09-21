@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :membership_packages
   resources :permissions
   resources :roles
   # FilePond endpoints

@@ -9,8 +9,7 @@ class EmployeesController < ApplicationController
     @q = employees_scope.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @employees = @q.result(distinct: true)
-    if @employees.empty?
-    else
+    unless @employees.empty?
       @pagy, @employees = pagy(@q.result(distinct: true), items: 10)
     end
   end

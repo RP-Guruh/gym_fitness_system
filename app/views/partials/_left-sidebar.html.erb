@@ -52,6 +52,14 @@
         <li>
           <div class="sidebar-small-cap">Master Data</div>
         </li>
+        <% if policy(MembershipPackage).index? %>
+          <li>
+            <%= link_to membership_packages_path, class: "dropdown-toggle", data: { turbo: "true" } do %>
+              <span class="micon dw dw-tag-1"></span>
+              <span class="mtext">Membership Package</span>
+            <% end %>
+          </li>
+        <% end %>
         <% if policy(InventoryCategory).index? %>
           <li>
             <%= link_to inventory_categories_path, class: "dropdown-toggle", data: { turbo: "true" } do %>

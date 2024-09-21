@@ -12,6 +12,7 @@ class Permission < ApplicationRecord
     "ProductCategory",
     "User",
     "Permission",
+    "MembershipPackage",
   ]
 
   ACTION_LIST = [
