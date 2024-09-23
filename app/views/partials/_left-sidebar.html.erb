@@ -25,6 +25,12 @@
           </li>
         <% end %>
         <li>
+          <%= link_to members_path, class: "dropdown-toggle", data: { turbo: "true" } do %>
+            <span class="micon dw dw-user-2"></span>
+            <span class="mtext">Member</span>
+          <% end %>
+        </li>
+        <li>
           <div class="dropdown-divider"></div>
         </li>
         <li>

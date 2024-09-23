@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  users_id: 1
+  email: MyString
+  handphone_number: MyString
+  gender: MyString
+  address: MyText
+  province: MyString
+  emergency_phone_name: MyString
+  emergency_phone_number: MyString
+  emergency_phone_status: MyString
+  membership_start_date: 2024-09-23
+  membership_end_date: 2024-09-23
+  status: MyString
+  membership_package_id: 1
+
+two:
+  name: MyString
+  users_id: 1
+  email: MyString
+  handphone_number: MyString
+  gender: MyString
+  address: MyText
+  province: MyString
+  emergency_phone_name: MyString
+  emergency_phone_number: MyString
+  emergency_phone_status: MyString
+  membership_start_date: 2024-09-23
+  membership_end_date: 2024-09-23
+  status: MyString
+  membership_package_id: 1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_21_121846) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_23_141726) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -146,7 +146,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_21_121846) do
     t.string "status", default: "Active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "created_by_name"
+    t.integer "updated_by"
+    t.string "updated_by_name"
+    t.bigint "membership_package_id", null: false
     t.index ["email"], name: "index_members_on_email", unique: true
+    t.index ["membership_package_id"], name: "index_members_on_membership_package_id"
     t.index ["users_id"], name: "index_members_on_users_id"
   end
 
@@ -342,6 +347,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_21_121846) do
   add_foreign_key "inventory_conditions", "inventories"
   add_foreign_key "member_classes", "class_packages"
   add_foreign_key "member_classes", "members"
+  add_foreign_key "members", "membership_packages"
   add_foreign_key "members", "users", column: "users_id"
   add_foreign_key "permissions", "roles"
   add_foreign_key "product_transactions", "products"
