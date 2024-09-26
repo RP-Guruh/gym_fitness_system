@@ -1,87 +1,146 @@
-<%= form_with(model: member, class: "contents") do |form| %>
-  <% if member.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(member.errors.count, "error") %> prohibited this member from being saved:</h2>
-
-      <ul>
-        <% member.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<div class="main-container" data-controller="employee">
+  <div class="">
+    <div class="min-height-50px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <div class="title">
+              <h4>Member</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Member</a></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <div class="my-5">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <div class="pd-20 card-box mb-30">
+      <div class="clearfix">
+        <div class="pull-left">
+          <h4 class="text-blue h4"><%= title %> Member list</h4>
+          <p class="mb-30">Please fill in the Member</p>
+        </div>
+      </div>
+      <%= form_with(model: member, class: "contents") do |form| %>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Name *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.text_field :name, class: "form-control", placeholder: "Input member name", minlength: 3, required: true %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Account *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :users_id, @accounts.map { |account|
+                [account.email, account.id] },
+                {include_blank: true},
+                {class: 'form-control', data: { controller: 'select-option-slim', action: 'change->employee#getAccountSelected' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Email *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.email_field :email, class: "form-control", placeholder: "Input member email address", required: true, data: { employee_target: 'email' } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Handphone Number *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.number_field :handphone_number, class: "form-control", placeholder: "Input member email address", required: true, data: { employee_target: 'email' } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Gender *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :gender, @genders.map { |value, key| [value, key] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Address *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.text_area :address,size: "70x5", class: "form-control", placeholder: "Input employee address",required: true %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Province *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :province, @province.map { |prv| [prv.name, prv.id] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">City *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :city, @cities.map { |city| [city.name, city.id] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Membership start date *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.date_select :membership_start_date, 
+                     start_year: Date.today.year, 
+                     end_year: Date.today.year, 
+                     order: [:day, :month, :year], 
+                     prompt: { day: 'Choose date', month: 'Choose month', year: 'Choose year' },
+                     class: 'form-control',
+                     data: { controller: 'select-option-slim' } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Package Membership *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :membership_package_id, @package.map { |pack| [pack.name, pack.id] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Status *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :status, @status.map { |value,key| [value,key] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Photo</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.file_field :employee_photo,
+                    accept: "image/png, image/jpeg",
+                    data: { controller: 'filepond', 
+                    filepond_target: 'input',
+                    direct_upload_url: rails_direct_uploads_url
+            }%>
+          </div>
+        </div>
+        <div class="inline">
+          <button class="btn btn-primary btn-lg" type="submit"
+        data-controller="confirmation"
+        data-action="click->confirmation#confirm"
+            data-confirmation-title-after-confirm-value="Save it!"
+            data-confirmation-text-after-confirm-value="Your file has been saved."
+            data-confirmation-confirm-button-text-value="save"
+            data-confirmation-message-value="Do you want to save this?"
+            data-confirmation-url-value="/members"
+            >
+            Simpan Data
+          </button>
+        </div>
+        <%= link_to "Kembali", members_path, class: "btn btn-warning btn-lg" %>
+      <% end %>
+    </div>
   </div>
-
-  <div class="my-5">
-    <%= form.label :users_id %>
-    <%= form.number_field :users_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :email %>
-    <%= form.text_field :email, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :handphone_number %>
-    <%= form.text_field :handphone_number, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :gender %>
-    <%= form.text_field :gender, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :address %>
-    <%= form.text_area :address, rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :province %>
-    <%= form.text_field :province, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :emergency_phone_name %>
-    <%= form.text_field :emergency_phone_name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :emergency_phone_number %>
-    <%= form.text_field :emergency_phone_number, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :emergency_phone_status %>
-    <%= form.text_field :emergency_phone_status, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :membership_start_date %>
-    <%= form.date_field :membership_start_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :membership_end_date %>
-    <%= form.date_field :membership_end_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :status %>
-    <%= form.text_field :status, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :membership_package_id %>
-    <%= form.number_field :membership_package_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
-  </div>
-<% end %>
+</div>

@@ -28,7 +28,6 @@ class EmployeesController < ApplicationController
 
   # GET /employees/1/edit
   def edit
-    @genders = [["Laki-Laki", "L"], ["Perempuan", "P"]]
     get_master_data
   end
 

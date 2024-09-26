@@ -2,6 +2,10 @@ class Member < ApplicationRecord
   include SaveName
   attr_accessor :current_user
 
+  belongs_to :user
+  belongs_to :membership_package
+  has_one_attached :member_photo
+
   def self.ransackable_attributes(auth_object = nil)
     ["created_at",
      "created_by",
@@ -37,14 +41,12 @@ class Member < ApplicationRecord
     validates :address
     validates :city
     validates :province
-    validates :emergency_phone_name
     validates :email
     validates :membership_start_date
   end
 
   with_options numericality: { message: "This field must be number" } do
     validates :handphone_number
-    validates :emergency_phone_number
   end
 
   private

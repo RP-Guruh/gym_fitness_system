@@ -1,10 +1,17 @@
 class MembersController < ApplicationController
   include Pagy::Backend
-  before_action :set_member, only: %i[ show edit update destroy ]
-
+  before_action -> { check_policy(Member) }, only: [:show, :edit, :new, :destroy]
+  before_action :set_status, :set_gender, :set_membership_package, :set_province, :set_cities, only: [:new, :edit]
   # GET /members or /members.json
   def index
-    @members = Member.all
+    members_scope = policy_scope(Member)
+
+    @q = members_scope.ransack(params[:q])
+    @q.sorts = "created_at desc" if @q.sorts.empty?
+    @members = @q.result(distinct: true)
+    unless @members.empty?
+      @pagy, @members = pagy(@q.result(distinct: true), items: 10)
+    end
   end
 
   # GET /members/1 or /members/1.json
@@ -13,6 +20,7 @@ class MembersController < ApplicationController
 
   # GET /members/new
   def new
+    @accounts = User.all
     @member = Member.new
   end
 
@@ -67,6 +75,29 @@ class MembersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def member_params
-    params.require(:member).permit(:name, :users_id, :email, :handphone_number, :gender, :address, :province, :emergency_phone_name, :emergency_phone_number, :emergency_phone_status, :membership_start_date, :membership_end_date, :status, :membership_package_id)
+    params.require(:member).permit(:name, :users_id, :email, :handphone_number, :gender, :address, :province, :membership_start_date, :membership_end_date, :status, :membership_package_id)
+  end
+
+  def set_gender
+    @genders = [["Laki-Laki", "L"], ["Perempuan", "P"]]
+  end
+
+  def set_province
+    @province = Province.all
+  end
+
+  def set_cities
+    @cities = Regency.all
+  end
+
+  def set_membership_package
+    @package = MembershipPackage.all
+  end
+
+  def set_status
+    @status = [
+      ["Active", "Y"],
+      ["Not Active", "N"],
+    ]
   end
 end

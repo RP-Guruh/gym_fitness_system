@@ -109,6 +109,7 @@ class PermissionsController < ApplicationController
       "User",
       "Permission",
       "MembershipPackage",
+      "Member",
     ]
   end
 
