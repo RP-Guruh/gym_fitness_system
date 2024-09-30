@@ -16,6 +16,11 @@ class AccountConfigurationsController < ApplicationController
     @roles = Role.all
   end
 
+  def edit
+    @user = User.new
+    @roles = Role.all
+  end
+
   def create
     @user = User.new(user_params)
 

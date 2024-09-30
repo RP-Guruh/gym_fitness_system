@@ -1,7 +1,9 @@
 class MembersController < ApplicationController
   include Pagy::Backend
+  before_action :set_member, only: %i[ show edit update destroy ]
+
   before_action -> { check_policy(Member) }, only: [:show, :edit, :new, :destroy]
-  before_action :set_status, :set_gender, :set_membership_package, :set_province, :set_cities, only: [:new, :edit]
+  before_action :set_status, :set_gender, :set_membership_package, :set_province, :set_cities, only: [:new, :edit, :show]
   # GET /members or /members.json
   def index
     members_scope = policy_scope(Member)
@@ -16,16 +18,18 @@ class MembersController < ApplicationController
 
   # GET /members/1 or /members/1.json
   def show
+    @accounts = User.where(role_id: 4)
   end
 
   # GET /members/new
   def new
-    @accounts = User.all
+    @accounts = User.where(role_id: 4)
     @member = Member.new
   end
 
   # GET /members/1/edit
   def edit
+    @accounts = User.where(role_id: 4)
   end
 
   # POST /members or /members.json
@@ -75,7 +79,7 @@ class MembersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def member_params
-    params.require(:member).permit(:name, :users_id, :email, :handphone_number, :gender, :address, :province, :membership_start_date, :membership_end_date, :status, :membership_package_id)
+    params.require(:member).permit(:member_photo, :name, :user_id, :email, :handphone_number, :gender, :address, :province, :city, :membership_start_date, :membership_end_date, :status, :membership_package_id)
   end
 
   def set_gender

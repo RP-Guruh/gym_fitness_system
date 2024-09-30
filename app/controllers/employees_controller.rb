@@ -28,6 +28,7 @@ class EmployeesController < ApplicationController
 
   # GET /employees/1/edit
   def edit
+    @accounts = User.all
     get_master_data
   end
 

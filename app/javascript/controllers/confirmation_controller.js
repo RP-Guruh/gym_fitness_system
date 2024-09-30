@@ -47,11 +47,23 @@ export default class extends Controller {
     .then(response => {
       if (!response.ok) {
         return response.json().then(data => {
-          console.log(data.name.join(', '));
+          let errorMessages = ""; // Menampung semua pesan kesalahan
+          for (const field in data) {
+            if (data.hasOwnProperty(field)) {
+              console.log("a");
+              // Menggabungkan pesan untuk setiap field
+              errorMessages += `<strong>${field}:</strong><br>`; // Menambahkan nama field
+              errorMessages += `<ul>`;
+              data[field].forEach(message => {
+                errorMessages += `<li>${message}</li>`; // Menambahkan pesan ke list
+              });
+              errorMessages += `</ul><br>`;
+            }
+          }
           // Menampilkan pesan error jika respons tidak OK
           Swal.fire({
             title: "Error!",
-            text: data.name.join(', '), // Menggabungkan semua pesan error
+            html: errorMessages, // Menggabungkan semua pesan error
             icon: "error"
           });
           throw new Error('Form submission failed');

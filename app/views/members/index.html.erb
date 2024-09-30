@@ -30,6 +30,7 @@
           <th scope="col"><%= sort_link(@q, :name, 'Name', default_order: :desc) %></th>
           <th scope="col">Email</th>
           <th scope="col">Join Date</th>
+          <th scope="col">Photo</th>
           <th scope="col"><%= sort_link(@q, :created_at, 'Created at & by', default_order: :desc) %></th>
           <th scope="col"><%= sort_link(@q, :updated_at, 'Updated at & by', default_order: :desc) %></th>
           <th scope="col">Actions</th>
@@ -43,6 +44,13 @@
             <td> <%= member.email %> </td>
             <td>
               <%= member.membership_start_date.strftime("%d %B %Y %H:%M") %>
+            </td>
+            <td>
+              <% if member.member_photo.attached? %>
+                <%= image_tag member.member_photo.variant(resize_to_limit: [80, nil]), class: 'image_rounded' %>
+              <% else %>
+                Photo not input
+              <% end %>
             </td>
             <td>
               <%= member.created_at.strftime("%d %B %Y %H:%M") %>

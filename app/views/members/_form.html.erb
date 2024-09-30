@@ -27,13 +27,13 @@
         <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Name *</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.text_field :name, class: "form-control", placeholder: "Input member name", minlength: 3, required: true %>
+            <%= form.text_field :name, class: "form-control", placeholder: "Input member name", minlength: 3, required: true, maxlength: 100 %>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Account *</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.select :users_id, @accounts.map { |account|
+            <%= form.select :user_id, @accounts.map { |account|
                 [account.email, account.id] },
                 {include_blank: true},
                 {class: 'form-control', data: { controller: 'select-option-slim', action: 'change->employee#getAccountSelected' } }
@@ -43,13 +43,19 @@
         <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Email *</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.email_field :email, class: "form-control", placeholder: "Input member email address", required: true, data: { employee_target: 'email' } %>
+            <%= form.text_field :email, class: "form-control", placeholder: "Input member email address", data: { employee_target: 'email' } %>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Handphone Number *</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.number_field :handphone_number, class: "form-control", placeholder: "Input member email address", required: true, data: { employee_target: 'email' } %>
+            <%= form.number_field :handphone_number, 
+                class: "form-control", 
+                placeholder: "Input member handphone number", 
+                required: true, 
+                data: { employee_target: 'handphone' }, 
+                maxlength: 13 
+            %>
           </div>
         </div>
         <div class="form-group row">
@@ -100,7 +106,7 @@
         <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Package Membership *</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.select :membership_package_id, @package.map { |pack| [pack.name, pack.id] },
+            <%= form.select :membership_package_id, @package.map { |pack| ["#{pack.name} - #{number_to_idr(pack.price)}", pack.id] },
                   { include_blank: true },
                   { class: 'form-control', data: { controller: 'select-option-slim' } }
             %>
@@ -110,15 +116,17 @@
           <label class="col-sm-12 col-md-2 col-form-label">Status *</label>
           <div class="col-sm-12 col-md-10">
             <%= form.select :status, @status.map { |value,key| [value,key] },
-                  { include_blank: true },
-                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+                  { include_blank: true,
+                    selected: 'N' 
+                  },
+                  { class: 'form-control', data: { controller: 'select-option-slim' }}
             %>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-12 col-md-2 col-form-label">Photo</label>
           <div class="col-sm-12 col-md-10">
-            <%= form.file_field :employee_photo,
+            <%= form.file_field :member_photo,
                     accept: "image/png, image/jpeg",
                     data: { controller: 'filepond', 
                     filepond_target: 'input',

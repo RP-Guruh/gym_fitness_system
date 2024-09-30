@@ -3,7 +3,9 @@ class Member < ApplicationRecord
   attr_accessor :current_user
 
   belongs_to :user
+  validates_associated :user
   belongs_to :membership_package
+  validates_associated :membership_package
   has_one_attached :member_photo
 
   def self.ransackable_attributes(auth_object = nil)
@@ -29,13 +31,13 @@ class Member < ApplicationRecord
   # Validasi
   validates :name, length: { minimum: 3, message: "Name must have at least 3 characters" }
 
-  validates :email, uniqueness: { message: "Email must be unique" }
+  validates :email, uniqueness: { message: "Email must be unique" },
+                    format: { with: URI::MailTo::EMAIL_REGEXP, message: "Email format is invalid" }
 
   validate :date_cannot_be_in_the_future
 
   with_options presence: { message: "This field cannot be blank" } do
     validates :name
-    validates :users_id
     validates :handphone_number
     validates :gender
     validates :address
