@@ -4,6 +4,7 @@ class MembersController < ApplicationController
 
   before_action -> { check_policy(Member) }, only: [:show, :edit, :new, :destroy]
   before_action :set_status, :set_gender, :set_membership_package, :set_province, :set_cities, only: [:new, :edit, :show]
+
   # GET /members or /members.json
   def index
     members_scope = policy_scope(Member)
@@ -35,7 +36,7 @@ class MembersController < ApplicationController
   # POST /members or /members.json
   def create
     @member = Member.new(member_params)
-
+    @member.current_user = current_user
     respond_to do |format|
       if @member.save
         format.html { redirect_to member_url(@member), notice: "Member was successfully created." }
@@ -49,6 +50,7 @@ class MembersController < ApplicationController
 
   # PATCH/PUT /members/1 or /members/1.json
   def update
+    @member.current_user = current_user
     respond_to do |format|
       if @member.update(member_params)
         format.html { redirect_to member_url(@member), notice: "Member was successfully updated." }

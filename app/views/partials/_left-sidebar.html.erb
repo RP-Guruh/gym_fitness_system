@@ -24,12 +24,22 @@
             <% end %>
           </li>
         <% end %>
-        <li>
-          <%= link_to members_path, class: "dropdown-toggle", data: { turbo: "true" } do %>
-            <span class="micon dw dw-user-2"></span>
-            <span class="mtext">Member</span>
-          <% end %>
-        </li>
+        <% if policy(Member).index? %>
+          <li>
+            <%= link_to members_path, class: "dropdown-toggle", data: { turbo: "true" } do %>
+              <span class="micon dw dw-user-2"></span>
+              <span class="mtext">Member</span>
+            <% end %>
+          </li>
+        <% end %>
+        <% if policy(Instructure).index? %>
+          <li>
+            <%= link_to instructures_path, class: "dropdown-toggle", data: { turbo: "true" } do %>
+              <span class="micon dw dw-user-2"></span>
+              <span class="mtext">Instructure</span>
+            <% end %>
+          </li>
+        <% end %>
         <li>
           <div class="dropdown-divider"></div>
         </li>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_23_141726) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_03_131258) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -84,6 +84,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_23_141726) do
     t.index ["user_id"], name: "index_employees_on_user_id"
   end
 
+  create_table "instructures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.string "email"
+    t.string "handphone_number"
+    t.string "gender"
+    t.text "address"
+    t.integer "city"
+    t.integer "province"
+    t.date "join_date"
+    t.string "status"
+    t.integer "created_by"
+    t.string "created_by_name"
+    t.integer "updated_by"
+    t.string "updated_by_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_instructures_on_user_id"
+  end
+
   create_table "inventories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -129,30 +149,27 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_23_141726) do
   end
 
   create_table "members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.bigint "users_id"
-    t.string "email"
-    t.string "handphone_number"
-    t.string "gender"
+    t.string "name", limit: 100
+    t.bigint "user_id"
+    t.string "email", limit: 30
+    t.string "handphone_number", limit: 13
+    t.string "gender", limit: 10
     t.text "address"
-    t.string "city"
-    t.string "province"
-    t.string "emergency_phone_name"
-    t.string "emergency_phone_number"
-    t.string "emergency_phone_status"
+    t.string "city", limit: 4
+    t.string "province", limit: 4
     t.date "membership_start_date"
     t.date "membership_end_date"
     t.integer "created_by"
-    t.string "status", default: "Active"
+    t.column "status", "enum('Y','N')", default: "Y"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "created_by_name"
+    t.string "created_by_name", limit: 100
     t.integer "updated_by"
-    t.string "updated_by_name"
+    t.string "updated_by_name", limit: 100
     t.bigint "membership_package_id", null: false
     t.index ["email"], name: "index_members_on_email", unique: true
     t.index ["membership_package_id"], name: "index_members_on_membership_package_id"
-    t.index ["users_id"], name: "index_members_on_users_id"
+    t.index ["user_id"], name: "index_members_on_users_id"
   end
 
   create_table "membership_packages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -343,12 +360,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_23_141726) do
   add_foreign_key "class_packages", "trainers", column: "trainers_id"
   add_foreign_key "districts", "regencies"
   add_foreign_key "employees", "users"
+  add_foreign_key "instructures", "users"
   add_foreign_key "inventories", "inventory_categories"
   add_foreign_key "inventory_conditions", "inventories"
   add_foreign_key "member_classes", "class_packages"
   add_foreign_key "member_classes", "members"
   add_foreign_key "members", "membership_packages"
-  add_foreign_key "members", "users", column: "users_id"
+  add_foreign_key "members", "users"
   add_foreign_key "permissions", "roles"
   add_foreign_key "product_transactions", "products"
   add_foreign_key "products", "product_categories"

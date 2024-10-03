@@ -110,6 +110,7 @@ class PermissionsController < ApplicationController
       "Permission",
       "MembershipPackage",
       "Member",
+      "Instructure",
     ]
   end
 

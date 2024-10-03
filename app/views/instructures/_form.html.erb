@@ -1,0 +1,143 @@
+<div class="main-container" data-controller="employee">
+  <div class="">
+    <div class="min-height-50px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <div class="title">
+              <h4>Instructure</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Instructure <%= instructure.email %></a></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pd-20 card-box mb-30">
+      <div class="clearfix">
+        <div class="pull-left">
+          <h4 class="text-blue h4"><%= title %> Instructure list</h4>
+          <p class="mb-30">Please fill in the Instructure</p>
+        </div>
+      </div>
+      <%= form_with(model: instructure, class: "contents") do |form| %>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Name *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.text_field :name, class: "form-control", placeholder: "Input Instructure name", minlength: 3, required: true, maxlength: 100 %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Account *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :user_id, @accounts.map { |account|
+                [account.email, account.id] },
+                {include_blank: true},
+                {class: 'form-control', data: { controller: 'select-option-slim', action: 'change->employee#getAccountSelected' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Email *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.text_field :email, class: "form-control", placeholder: "Input Instructure email address", data: { employee_target: 'email' } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Handphone Number *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.number_field :handphone_number, 
+                class: "form-control", 
+                placeholder: "Input Instructure handphone number", 
+                required: true, 
+                data: { employee_target: 'handphone' }, 
+                maxlength: 13 
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Gender *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :gender, @genders.map { |value, key| [value, key] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Address *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.text_area :address,size: "70x5", class: "form-control", placeholder: "Input employee address",required: true %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Province *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :province, @province.map { |prv| [prv.name, prv.id] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">City *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :city, @cities.map { |city| [city.name, city.id] },
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Instructureship join date *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.date_select :join_date, 
+                     start_year: Date.today.year, 
+                     end_year: Date.today.year, 
+                     order: [:day, :month, :year], 
+                     prompt: { day: 'Choose date', month: 'Choose month', year: 'Choose year' },
+                     class: 'form-control',
+                     data: { controller: 'select-option-slim' } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Status *</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.select :status, @status.map { |key, value| [key, value] }, 
+                { include_blank: true, selected: (title == 'Edit' ? instructure.status : 'Y') }, 
+                { class: 'form-control', data: { controller: 'select-option-slim' } }
+            %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-12 col-md-2 col-form-label">Photo</label>
+          <div class="col-sm-12 col-md-10">
+            <%= form.file_field :instructure_photo,
+                    accept: "image/png, image/jpeg",
+                    data: { controller: 'filepond', 
+                    filepond_target: 'input',
+                    direct_upload_url: rails_direct_uploads_url
+            }%>
+          </div>
+        </div>
+        <div class="inline">
+          <button class="btn btn-primary btn-lg" type="submit"
+        data-controller="confirmation"
+        data-action="click->confirmation#confirm"
+            data-confirmation-title-after-confirm-value="Save it!"
+            data-confirmation-text-after-confirm-value="Your file has been saved."
+            data-confirmation-confirm-button-text-value="save"
+            data-confirmation-message-value="Do you want to save this?"
+            data-confirmation-url-value="/instructures"
+            >
+            Simpan Data
+          </button>
+        </div>
+        <%= link_to "Kembali", instructures_path, class: "btn btn-warning btn-lg" %>
+      <% end %>
+    </div>
+  </div>
+</div>

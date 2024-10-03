@@ -14,6 +14,7 @@ class Permission < ApplicationRecord
     "Permission",
     "MembershipPackage",
     "Member",
+    "Instructure",
   ]
 
   ACTION_LIST = [
