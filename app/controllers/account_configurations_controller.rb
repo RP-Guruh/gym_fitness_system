@@ -1,5 +1,6 @@
 class AccountConfigurationsController < ApplicationController
   include Pagy::Backend
+  include ApplicationHelper
 
   def index
     @q = User.ransack(params[:q])
@@ -19,6 +20,18 @@ class AccountConfigurationsController < ApplicationController
   def edit
     @user = User.new
     @roles = Role.all
+  end
+
+  def change_profile_and_password
+    user = User.find(params[:id])
+
+    if user.role_id == 1 || user.role_id == 2 # Jika role 1 owner || Jika role 2 admin
+      @profile = Employee.where("user_id", user.id)
+    elsif user.role_id == 3 # Jika role 3 instruktur
+      @profile = Instructure.where("user_id", user.id)
+    elsif user.role_id == 4 # Jika role 4 member
+      @profile = Member.where("user_id", user.id)
+    end
   end
 
   def create
