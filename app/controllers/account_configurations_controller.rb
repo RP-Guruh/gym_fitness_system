@@ -1,6 +1,7 @@
 class AccountConfigurationsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
+  before_action :set_cities, :set_gender, :set_province, :set_membership_package, :set_status, only: [:change_profile_and_password]
 
   def index
     @q = User.ransack(params[:q])
@@ -25,12 +26,17 @@ class AccountConfigurationsController < ApplicationController
   def change_profile_and_password
     user = User.find(params[:id])
 
-    if user.role_id == 1 || user.role_id == 2 # Jika role 1 owner || Jika role 2 admin
-      @profile = Employee.where("user_id", user.id)
-    elsif user.role_id == 3 # Jika role 3 instruktur
-      @profile = Instructure.where("user_id", user.id)
-    elsif user.role_id == 4 # Jika role 4 member
-      @profile = Member.where("user_id", user.id)
+    case user.role_id
+    when 1, 2
+      @employee = Employee.where(user_id: user.id)
+      render "profile_employee"
+    when 3
+      @instructure = Instructure.where(user_id: user.id)
+      render "profile_instructure"
+    when 4
+      @member = Member.where(user_id: user.id)
+      @accounts = User.where(role_id: 4)
+      render "profile_member"
     end
   end
 
@@ -58,6 +64,29 @@ class AccountConfigurationsController < ApplicationController
   end
 
   private
+
+  def set_gender
+    @genders = [["Laki-Laki", "L"], ["Perempuan", "P"]]
+  end
+
+  def set_province
+    @province = Province.all
+  end
+
+  def set_cities
+    @cities = Regency.all
+  end
+
+  def set_membership_package
+    @package = MembershipPackage.all
+  end
+
+  def set_status
+    @status = [
+      ["Active", "Y"],
+      ["Not Active", "N"],
+    ]
+  end
 
   def user_params
     params.require(:user).permit(:email, :password, :role_id)
