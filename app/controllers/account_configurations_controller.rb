@@ -28,7 +28,8 @@ class AccountConfigurationsController < ApplicationController
 
     case user.role_id
     when 1, 2
-      @employee = Employee.where(user_id: user.id)
+      @employee = Employee.where(user_id: user.id).first
+      set_gender
       render "profile_employee"
     when 3
       @instructure = Instructure.where(user_id: user.id)
@@ -38,6 +39,32 @@ class AccountConfigurationsController < ApplicationController
       @accounts = User.where(role_id: 4)
       render "profile_member"
     end
+  end
+
+  def update_profil
+    update_type = params[:employee][:type]
+
+    puts "halo #{update_type}"
+    case update_type
+    when "employee"
+      @employee = Employee.find(params[:id])
+
+      respond_to do |format|
+        if @employee.update(employee_params)
+          format.html { redirect_to "/profile/#{@employee.id}", notice: "Employee was successfully updated." }
+          format.json { render :show, status: :ok, location: @employee }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @employee.errors, status: :unprocessable_entity }
+        end
+      end
+    when "member"
+    when "instructur"
+    end
+  end
+
+  def update_password
+    puts "ganti password"
   end
 
   def create
@@ -90,5 +117,13 @@ class AccountConfigurationsController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password, :role_id)
+  end
+
+  def employee_params
+    params.require(:employee).permit(:employee_photo, :first_name, :last_name, :user_id, :date_of_birth, :gender, :address, :email)
+  end
+
+  def password_params
+    params.require(:employee).permit(:encrypted_password)
   end
 end

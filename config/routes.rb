@@ -22,6 +22,16 @@ Rails.application.routes.draw do
 
   # START : CUSTOM ROUTES
   get "/profile/:id", to: "account_configurations#change_profile_and_password", as: :change_profile_password
+
+  resources :account_configurations do
+    member do
+      put "update_profil"
+      patch "update_profil"
+
+      put "update_password"
+      patch "update_password"
+    end
+  end
   # END : CUSTOM ROUTES
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

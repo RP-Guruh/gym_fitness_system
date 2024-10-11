@@ -1,0 +1,257 @@
+<div class="mx-auto">
+  <div class="mx-auto">
+    <div class="main-container">
+      <div class="min-height-50px">
+        <div class="page-header">
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="title">
+                <h4>Profile</h4>
+              </div>
+              <nav aria-label="breadcrumb" role="navigation">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-30">
+            <div class="pd-20 card-box height-100-p">
+              <div class="profile-photo">
+                <% if @employee.employee_photo.attached? %>
+                  <%= image_tag @employee.employee_photo.variant(resize_to_limit: [100, nil]), class: 'image_rounded avatar-photo' %>
+                <% else %>
+                  Photo not input
+                <% end %>
+              </div>
+              <h5 class="text-center h5 mb-0"><%= @employee.first_name %> <%= @employee.last_name %></h5>
+              <div class="profile-info">
+                <h5 class="mb-20 h5 text-blue">Contact Information</h5>
+                <ul>
+                  <li>
+                    <span>Birth Date:</span>
+                    <%= @employee.date_of_birth %>
+                  </li>
+                  <li>
+                    <span>Gender:</span>
+                    <%= @employee.gender == 'P' ? 'Perempuan' : 'Laki-laki' %>
+                  </li>
+                  <li>
+                    <span>Email Address:</span>
+                    <%= @employee.email %>
+                  </li>
+                  <li>
+                    <span>Address:</span>
+                    <%= @employee.address %>
+                  </li>
+                </ul>
+              </div>
+              <div class="profile-info">
+                <h5 class="mb-20 h5 text-blue">Job Information</h5>
+                <ul>
+                  <li>
+                    <span>Join Date:</span>
+                    <%= @employee.hire_date %>
+                  </li>
+                  <li>
+                    <span>Position:</span>
+                    <%= @employee.job_title %>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-30">
+            <div class="card-box height-100-p overflow-hidden">
+              <div class="profile-tab height-100-p">
+                <div class="tab height-100-p">
+                  <ul class="nav nav-tabs customtab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#timeline" role="tab">Timeline</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#setting" role="tab">Settings</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#change_password" role="tab">Change Password</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content">
+                    <!-- Timeline Tab start -->
+                    <div class="tab-pane fade show active" id="timeline" role="tabpanel">
+                      <div class="pd-20">
+                        <div class="profile-timeline">
+                          <div class="timeline-month">
+                            <h5><%= @employee.created_at.strftime("%B, %Y") %></h5>
+                          </div>
+                          <div class="profile-timeline-list">
+                            <ul>
+                              <li>
+                                <div class="date"><%= @employee.created_at.strftime("%d/%m/%y") %></div>
+                                <div class="task-name"><i class="ion-android-alarm-clock"></i> Profile Created</div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Setting Tab start -->
+                    <div class="tab-pane fade height-100-p" id="setting" role="tabpanel">
+                      <div class="profile-setting">
+                        <%= form_with(model: @employee, url: update_profil_account_configuration_path(@employee), method: :put, class: "contents") do |form| %>
+                          <%= form.hidden_field :type, value: 'employee', name: 'employee[type]' %>
+                          <ul class="profile-edit-list row">
+                            <li class="weight-500 col-md-12">
+                              <h4 class="text-blue h5 mb-20">Edit Your Profile</h4>
+                              <% if @employee.errors.any? %>
+                                <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+                                  <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this province from being saved:</h2>
+                                  <ul>
+                                    <% @employee.errors.each do |error| %>
+                                      <li><%= error.full_message %></li>
+                                    <% end %>
+                                  </ul>
+                                </div>
+                              <% end %>
+                              <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">First Name *</label>
+                                <div class="col-sm-12 col-md-10">
+                                  <%= form.text_field :first_name, class: "form-control", placeholder: "Input first name", minlength: 3, required: true %>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">Last Name *</label>
+                                <div class="col-sm-12 col-md-10">
+                                  <%= form.text_field :last_name, class: "form-control", placeholder: "Input last name", minlength: 3, required: true %>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">Gender *</label>
+                                <div class="col-sm-12 col-md-10">
+                                  <%= form.select :gender, @genders.map { |value, key| [value, key] },
+                            { include_blank: true },
+                            { class: 'form-control', data: { controller: 'select-option-slim' } }
+                        %>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">Date of birth *</label>
+                                <div class="col-sm-12 col-md-10">
+                                  <%= form.date_select :date_of_birth, 
+                                start_year: 1960, 
+                                end_year: Date.today.year, 
+                                order: [:day, :month, :year], 
+                                prompt: { day: 'Choose date', month: 'Choose month', year: 'Choose year' },
+                                class: 'form-control',
+                                data: { controller: 'select-option-slim' } %>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">Email *</label>
+                                <div class="col-sm-12 col-md-10">
+                                  <%= form.email_field :email, class: "form-control", placeholder: "Input employee email address",required: true %>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">Address *</label>
+                                <div class="col-sm-12 col-md-10">
+                                  <%= form.text_area :address,size: "70x5", class: "form-control", placeholder: "Input employee address",required: true %>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">Photo</label>
+                                <div class="col-sm-12 col-md-10">
+                                  <%= form.file_field :employee_photo,
+                                        accept: "image/png, image/jpeg",
+                                        data: { controller: 'filepond', 
+                                        filepond_target: 'input',
+                                        direct_upload_url: rails_direct_uploads_url
+                                }%>
+                                </div>
+                              </div>
+                              <div class="inline">
+                                <button class="btn btn-primary btn-lg" type="submit"
+                                data-controller="confirmation"
+                                data-action="click->confirmation#confirm"
+                                  data-confirmation-title-after-confirm-value="Save it!"
+                                  data-confirmation-text-after-confirm-value="Your file has been saved."
+                                  data-confirmation-confirm-button-text-value="save"
+                                  data-confirmation-message-value="Do you want to save this?"
+                                  data-confirmation-url-value="/profile/<%=@employee.user_id%>"
+                                  >
+                                  Simpan Data
+                                </button>
+                              </div>
+                              <%= link_to "Kembali", '/dashboard', class: "btn btn-warning btn-lg" %>
+                            </li>
+                          </ul>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade height-100-p" id="change_password" role="tabpanel">
+                      <div class="profile-setting">
+                        <%= form_with(model: @employee, url: update_password_account_configuration_path(@employee), method: :put, class: "contents") do |form| %>
+                          <%= form.hidden_field :type, value: 'employee', name: 'employee[type]' %>
+                          <ul class="profile-edit-list row">
+                            <li class="weight-500 col-md-12">
+                              <h4 class="text-blue h5 mb-20">Change your password</h4>
+                              <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">Old Password *</label>
+                                <div class="col-sm-12 col-md-10">
+                                  <%= form.text_field :old_password, value: "", class: "form-control", placeholder: "Input old password", minlength: 3, required: true, maxlength: 100 %>
+                                </div>
+                              </div>
+                              <div class="form-group row mt-8">
+                                <label class="col-sm-12 col-md-2 col-form-label">New assword *</label>
+                                <div data-controller="copiedtext" class="input-group bootstrap-touchspin bootstrap-touchspin-injected col-sm-12 col-md-6">
+                                  <span class="input-group-btn input-group-append">
+                                    <button type="button" class="btn btn-primary bootstrap-touchspin-up" data-action="copiedtext#generate">
+                                      Generate
+                                    </button>
+                                  </span>
+                                  <%= form.text_field :password, class: "form-control", data: { copiedtext_target: "source" } %>
+                                  <span class="input-group-btn input-group-append"><button type="button" class="btn btn-primary bootstrap-touchspin-up" data-action="copiedtext#copy">Copy</button></span>
+                                  <small class="form-text text-muted">
+                                    Copy terlebih dahulu password, sebelum di save
+                                  </small>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">Confirm Password *</label>
+                                <div class="col-sm-12 col-md-10">
+                                  <%= form.text_field :confirm_password, value: "", class: "form-control", placeholder: "Type your new password", minlength: 3, required: true, maxlength: 100 %>
+                                </div>
+                              </div>
+                              <div class="inline">
+                                <button class="btn btn-primary btn-lg" type="submit"
+                                data-controller="confirmation"
+                                data-action="click->confirmation#confirm"
+                                  data-confirmation-title-after-confirm-value="Save it & logout"
+                                  data-confirmation-text-after-confirm-value="Your file has been saved."
+                                  data-confirmation-confirm-button-text-value="save"
+                                  data-confirmation-message-value="If you change your password, you will be logged out and need to log in again."
+                                  data-confirmation-url-value="/profile/<%=@employee.user_id%>"
+                                  >
+                                  Simpan Data
+                                </button>
+                              </div>
+                              <%= link_to "Kembali", '/dashboard', class: "btn btn-warning btn-lg" %>
+                            </li>
+                          </ul>
+                        <% end %>
+                      </div>
+                    </div>
+                    <!-- Setting Tab End -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
