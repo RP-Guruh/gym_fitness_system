@@ -20,7 +20,7 @@ export default class extends Controller {
   }
 
   generate(event) {
-    fetch("/generate_new_password", {
+    fetch("/account_configurations/generate_new_password", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

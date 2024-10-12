@@ -64,7 +64,29 @@ class AccountConfigurationsController < ApplicationController
   end
 
   def update_password
-    puts "ganti password"
+    @user = User.find(params[:profil][:id])
+    old_password = params[:profil][:old_password]
+    new_password = params[:profil][:password]
+    password_confirmation = params[:profil][:confirm_password]
+
+    if @user.valid_password?(old_password)
+      if new_password == password_confirmation
+        if @user.update(password: new_password)
+          sign_out(@user)
+          flash[:success] = "Password berhasil diperbarui! Silakan login kembali."
+          respond_to do |format|
+            format.html { redirect_to new_user_session_path }
+            format.json { render json: { message: "Password berhasil diperbarui!" }, status: :ok }
+          end
+        else
+          render_error("Gagal memperbarui password. Pastikan password baru memenuhi semua kriteria.")
+        end
+      else
+        render_error("Password baru dan konfirmasi tidak cocok.")
+      end
+    else
+      render_error("Password lama tidak valid.")
+    end
   end
 
   def create
@@ -124,6 +146,33 @@ class AccountConfigurationsController < ApplicationController
   end
 
   def password_params
-    params.require(:employee).permit(:encrypted_password)
+    params.require(:user).permit(:password)
+  end
+
+  def render_error(message)
+    flash.now[:error] = message
+    respond_to do |format|
+      format.html { render_profile_view } # Render HTML view based on role
+      format.json { render json: { error: message }, status: :unprocessable_entity }
+    end
+  end
+
+  def render_profile_view
+    case @user.role_id
+    when 1, 2
+      @employee = Employee.find_by(user_id: @user.id)
+      set_gender
+      render "profile_employee" # Ensure this view exists
+    when 3
+      @instructure = Instructure.where(user_id: @user.id)
+      render "profile_instructure" # Ensure this view exists
+    when 4
+      @member = Member.where(user_id: @user.id)
+      @accounts = User.where(role_id: 4)
+      render "profile_member" # Ensure this view exists
+    else
+      flash[:error] = "Role tidak dikenali."
+      redirect_to root_path # Redirect if role not recognized
+    end
   end
 end
