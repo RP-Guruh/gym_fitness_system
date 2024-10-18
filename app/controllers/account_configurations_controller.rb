@@ -43,8 +43,6 @@ class AccountConfigurationsController < ApplicationController
 
   def update_profil
     update_type = params[:employee][:type]
-
-    puts "halo #{update_type}"
     case update_type
     when "employee"
       @employee = Employee.find(params[:id])
@@ -150,10 +148,16 @@ class AccountConfigurationsController < ApplicationController
   end
 
   def render_error(message)
-    flash.now[:error] = message
+    flash.now[:error] = message # Menambahkan pesan error di flash
     respond_to do |format|
-      format.html { render_profile_view } # Render HTML view based on role
-      format.json { render json: { error: message }, status: :unprocessable_entity }
+      format.html do
+        Rails.logger.debug "Masuk ke format.html di render_error"
+        render_profile_view
+      end
+      format.json do
+        Rails.logger.debug "Masuk ke format.json di render_error"
+        render json: { error: message }, status: :unprocessable_entity
+      end
     end
   end
 

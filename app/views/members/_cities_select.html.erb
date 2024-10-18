@@ -1,0 +1,11 @@
+ <%= turbo_frame_tag 'person_cities_select', data: { 
+    update_url: '/get_city',
+    request_param_name: 'province' 
+  } do %>
+  <div class="col-sm-12 col-md-10">
+    <%= form.select :city, options_for_select(cities),
+                  { include_blank: true },
+                  { class: 'form-control', data: { controller: 'select-option-slim' } }
+   %>
+  </div>
+<% end %>

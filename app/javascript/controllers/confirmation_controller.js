@@ -48,18 +48,23 @@ export default class extends Controller {
       if (!response.ok) {
         return response.json().then(data => {
           let errorMessages = ""; // Menampung semua pesan kesalahan
-          for (const field in data) {
-            if (data.hasOwnProperty(field)) {
-              console.log("a");
-              // Menggabungkan pesan untuk setiap field
-              errorMessages += `<strong>${field}:</strong><br>`; // Menambahkan nama field
-              errorMessages += `<ul>`;
-              data[field].forEach(message => {
-                errorMessages += `<li>${message}</li>`; // Menambahkan pesan ke list
-              });
-              errorMessages += `</ul><br>`;
-            }
+          if (data.hasOwnProperty('error')) {
+            errorMessages += `<ul><li>${data.error}</li></ul><br>`;
           }
+          else {
+            for (const field in data) {
+              if (data.hasOwnProperty(field)) {             
+                // Menggabungkan pesan untuk setiap field
+                errorMessages += `<strong>${field}:</strong><br>`; // Menambahkan nama field
+                errorMessages += `<ul>`;
+                data[field].forEach(message => {
+                  errorMessages += `<li>${message}</li>`; // Menambahkan pesan ke list
+                });
+                errorMessages += `</ul><br>`;
+              }
+            }  
+          }
+        
           // Menampilkan pesan error jika respons tidak OK
           Swal.fire({
             title: "Error!",

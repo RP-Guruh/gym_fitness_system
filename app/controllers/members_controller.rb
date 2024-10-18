@@ -72,6 +72,10 @@ class MembersController < ApplicationController
     end
   end
 
+  def cities_select
+    @cities = Regency.where(province_id: params[:province])
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

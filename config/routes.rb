@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   resources :account_configurations, only: [:index, :new, :create, :edit, :update, :generate_new_password]
   get "account_configurations/generate_new_password" => "account_configurations#generate_new_password"
 
+  get "get_city" => "member#cities_select"
+
   devise_for :users
 
   # START : CUSTOM ROUTES
