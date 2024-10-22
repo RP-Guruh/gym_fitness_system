@@ -13,6 +13,17 @@ class ApplicationController < ActionController::Base
     authorize resource
   end
 
+  def load_regencies
+    @regencies = Regency.where(province_id: params[:province_id])
+    @my_model = params[:model_id]
+
+    respond_to do |format|
+      format.turbo_stream { render partial: "partials/load_regencies" }
+      #format.json { render json: @regencies }
+      #format.all { render json: { error: "Format not supported" }, status: :not_acceptable } # Menangani format yang tidak dikenal
+    end
+  end
+
   private
 
   def user_not_authorized(exception)

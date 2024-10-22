@@ -1,0 +1,14 @@
+<turbo-stream target="regency-select-container" action="update">
+  <template class="col-sm-12 col-md-10">
+    <select id="regency-select" name="<%= @my_model %>" class="form-control" data-controller="select-option-slim" data-target="dependent-fields.regencySelect">
+      <option value="">Select Regency</option>
+      <% if @regencies.present? %>
+        <% @regencies.each do |regency| %>
+          <option value="<%= regency.id %>"><%= regency.name %></option>
+        <% end %>
+      <% else %>
+        <option value="">Data not available</option>
+      <% end %>
+    </select>
+  </template>
+</turbo-stream>

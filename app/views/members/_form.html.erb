@@ -73,22 +73,21 @@
             <%= form.text_area :address,size: "70x5", class: "form-control", placeholder: "Input employee address",required: true %>
           </div>
         </div>
-        <div class="form-group row">
-          <label class="col-sm-12 col-md-2 col-form-label">Province *</label>
-          <div class="col-sm-12 col-md-10">
-            <%= form.select :province, @province.map { |prv| [prv.name, prv.id] },
+        <div data-controller="dependent-fields">
+          <div class="form-group row">
+            <label class="col-sm-12 col-md-2 col-form-label">Province *</label>
+            <div class="col-sm-12 col-md-10">
+              <%= form.select :province, @province.map { |prv| [prv.name, prv.id] },
                   { include_blank: true },
-                  { class: 'form-control', data: { controller: 'select-option-slim' } }
-            %>
+                  { class: 'form-control', 
+                    data: { controller: 'select-option-slim', 
+                             action: 'change->dependent-fields#loadRegencies', 
+                             target: 'dependent-fields.provinceSelect' } } %>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-12 col-md-2 col-form-label">City *</label>
-          <div class="col-sm-12 col-md-10">
-            <%= form.select :city, @cities.map { |city| [city.name, city.id] },
-                  { include_blank: true },
-                  { class: 'form-control', data: { controller: 'select-option-slim' } }
-            %>
+          <input type="hidden" value="member[city]" data-target="dependent-fields.modelSelect">
+          <div class="form-group row">
+            <%= render 'partials/city_select' %>
           </div>
         </div>
         <div class="form-group row">
