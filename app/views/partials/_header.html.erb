@@ -109,6 +109,8 @@
           <span class="user-icon">
             <% if current_user.employee && current_user.employee.employee_photo.attached? %>
               <%= image_tag current_user.employee.employee_photo.variant(resize_to_limit: [100, nil]), alt: "Employee Photo" %>
+            <% elsif current_user.member && current_user.member.member_photo.attached? %>
+              <%= image_tag current_user.member.member_photo.variant(resize_to_limit: [100, nil]), alt: "Member Photo" %>
             <% else %>
               <img src="vendors/images/photo1.jpg" alt="">
             <% end %>

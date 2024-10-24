@@ -43,6 +43,9 @@ class AccountConfigurationsController < ApplicationController
 
   def update_profil
     update_type = params[:employee][:type]
+    puts "halooo"
+    puts update_type
+
     case update_type
     when "employee"
       @employee = Employee.find(params[:id])
@@ -62,6 +65,7 @@ class AccountConfigurationsController < ApplicationController
   end
 
   def update_password
+    puts "masuk sini"
     @user = User.find(params[:profil][:id])
     old_password = params[:profil][:old_password]
     new_password = params[:profil][:password]

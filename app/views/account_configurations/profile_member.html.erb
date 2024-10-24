@@ -111,40 +111,7 @@
                   </div>
                   <div class="tab-pane fade height-100-p" id="change_password" role="tabpanel">
                     <div class="profile-setting">
-                      <%= form_with(model: member, class: "contents") do |form| %>
-                        <ul class="profile-edit-list row">
-                          <li class="weight-500 col-md-12">
-                            <h4 class="text-blue h5 mb-20">Change your password</h4>
-                            <div class="form-group row">
-                              <label class="col-sm-12 col-md-2 col-form-label">Old Password *</label>
-                              <div class="col-sm-12 col-md-10">
-                                <%= form.text_field :old_password, value: "", class: "form-control", placeholder: "Input old password", minlength: 3, required: true, maxlength: 100 %>
-                              </div>
-                            </div>
-                            <div class="form-group row mt-8">
-                              <label class="col-sm-12 col-md-2 col-form-label">New assword *</label>
-                              <div data-controller="copiedtext" class="input-group bootstrap-touchspin bootstrap-touchspin-injected col-sm-12 col-md-6">
-                                <span class="input-group-btn input-group-append">
-                                  <button type="button" class="btn btn-primary bootstrap-touchspin-up" data-action="copiedtext#generate">
-                                    Generate
-                                  </button>
-                                </span>
-                                <%= form.text_field :password, class: "form-control", data: { copiedtext_target: "source" } %>
-                                <span class="input-group-btn input-group-append"><button type="button" class="btn btn-primary bootstrap-touchspin-up" data-action="copiedtext#copy">Copy</button></span>
-                                <small class="form-text text-muted">
-                                  Copy terlebih dahulu password, sebelum di save
-                                </small>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-12 col-md-2 col-form-label">Confirm Password *</label>
-                              <div class="col-sm-12 col-md-10">
-                                <%= form.text_field :confirm_password, value: "", class: "form-control", placeholder: "Type your new password", minlength: 3, required: true, maxlength: 100 %>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      <% end %>
+                      <%= render 'form_change_password', mymodel: member %>
                     </div>
                   </div>
                   <!-- Setting Tab start -->
@@ -164,10 +131,10 @@
                               <label class="col-sm-12 col-md-2 col-form-label">Account *</label>
                               <div class="col-sm-12 col-md-10">
                                 <%= form.select :user_id, @accounts.map { |account|
-                [account.email, account.id] },
-                {include_blank: true},
-                {class: 'form-control', data: { controller: 'select-option-slim', action: 'change->employee#getAccountSelected' } }
-            %>
+                                [account.email, account.id] },
+                                {include_blank: true},
+                                {class: 'form-control', disabled: true, data: { controller: 'select-option-slim', action: 'change->employee#getAccountSelected' } }
+                            %>
                               </div>
                             </div>
                             <div class="form-group row">
@@ -229,7 +196,7 @@
                      end_year: Date.today.year, 
                      order: [:day, :month, :year], 
                      prompt: { day: 'Choose date', month: 'Choose month', year: 'Choose year' },
-                     class: 'form-control',
+                     class: 'form-control', disabled: true,
                      data: { controller: 'select-option-slim' } %>
                               </div>
                             </div>
@@ -237,20 +204,21 @@
                               <label class="col-sm-12 col-md-2 col-form-label">Package Membership *</label>
                               <div class="col-sm-12 col-md-10">
                                 <%= form.select :membership_package_id, @package.map { |pack| ["#{pack.name} - #{number_to_idr(pack.price)}", pack.id] },
-                  { include_blank: true },
-                  { class: 'form-control', data: { controller: 'select-option-slim' } }
-            %>
+                                      { include_blank: true, selected: member.membership_package_id },
+                                      { class: 'form-control', disabled: true, data: { controller: 'select-option-slim' } }
+                                %>
                               </div>
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-12 col-md-2 col-form-label">Status *</label>
                               <div class="col-sm-12 col-md-10">
                                 <%= form.select :status, @status.map { |value,key| [value,key] },
-                  { include_blank: true,
-                    selected: 'N' 
-                  },
-                  { class: 'form-control', data: { controller: 'select-option-slim' }}
-            %>
+                                      { include_blank: true,
+                                        selected: member.status,
+                                        
+                                      },
+                                      { class: 'form-control', disabled: true, data: { controller: 'select-option-slim' }}
+                                %>
                               </div>
                             </div>
                             <div class="form-group row">
