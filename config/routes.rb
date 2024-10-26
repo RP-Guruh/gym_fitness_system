@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :class_packages
   resources :instructures
   resources :members
   resources :membership_packages

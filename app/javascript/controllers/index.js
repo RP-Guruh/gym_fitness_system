@@ -23,3 +23,4 @@ application.register("copiedtext");
 application.register("generate-password");
 application.register("employee");
 application.register("dependent-fields");
+application.register("date-field")

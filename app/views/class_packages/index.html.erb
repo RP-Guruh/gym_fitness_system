@@ -1,0 +1,108 @@
+<div class="main-container">
+  <!-- basic table  Start -->
+  <div class="pd-20 card-box mb-30">
+    <div class="clearfix mb-20">
+      <div class="pull-left">
+        <h4 class="text-blue h4">List Class Gym Package</h4>
+      </div>
+      <div class="pull-right">
+        <%= link_to "Add new data", new_class_package_path, class: "btn btn-primary btn-sm scroll-click", data: {turbo_stream: true}%>
+      </div>
+    </div>
+    <div class="mt-4">
+      <div class="flex items-center space-x-2">
+        <%= search_form_for @q, url: class_packages_path, method: :get, data: { turbo_frame: "class_package" } do |f| %>
+          <%= f.search_field :name_cont, class: "", placeholder: "Search Here" %>
+          <%= f.date_field(:created_at_eq, placeholder: t(:date_format)) %>
+          <%= f.submit "Search", class: "btn btn-primary btn-sm px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600" %>
+        <% end %>
+      </div>
+    </div>
+    <table class="table mt-4">
+      <% if @class_packages.count >= 1 %>
+        <div class="d-flex justify-content-end">
+          <%== pagy_bootstrap_nav(@pagy) %>
+        </div>
+      <% end %>
+      <thead>
+        <tr>
+          <th scope="col"> <%= sort_link(@q, :id, '#', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :name, 'Name', default_order: :desc) %></th>
+          <th scope="col">Description</th>
+          <th scope="col">Price</th>
+          <th scope="col"><%= sort_link(@q, :created_at, 'Created at & by', default_order: :desc) %></th>
+          <th scope="col"><%= sort_link(@q, :updated_at, 'Updated at & by', default_order: :desc) %></th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @class_packages.each_with_index do |package, index| %>
+          <tr>
+            <td> <%= @pagy.offset + index + 1  %> </td>
+            <td><%= highlight package.name, params.dig(:q, :name_cont) %> </td>
+            <td> <%= package.description %> </td>
+            <td> <%= number_to_idr(package.price) %> </td>
+            <td>
+              <%= package.created_at.strftime("%d %B %Y %H:%M") %>
+              <div class="d-block">
+                <span class="rows">
+                  <%= package.created_by_name %>
+                </span>
+              </div>
+            </td>
+            <td>
+              <%= package.updated_at.strftime("%d %B %Y %H:%M") %>
+              <div class="d-block">
+                <span class="rows">
+                  <%= package.updated_by_name || "-" %>
+                </span>
+              </div>
+            </td>
+            <td>
+              <div class="dropdown">
+                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                  <i class="dw dw-more"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                  <% if policy(MembershipPackage).edit? %>
+                    <%= link_to edit_class_package_path(package), 
+                    data: { turbo_frame: "class_package_form", turbo_stream: true }, 
+                    class: "dropdown-item" do %>
+                      <i class="dw dw-edit2"></i> Edit
+                    <% end %>
+                  <% end %>
+                  <% if policy(ClassPackage).show? %>
+                    <%= link_to class_package, 
+                    data: { turbo_frame: "class_package_form", turbo_stream: true }, 
+                    class: "dropdown-item" do %>
+                      <i class="dw dw-eye"></i> Show
+                    <% end %>
+                  <% end %>
+                  <% if policy(ClassPackage).destroy? %>
+                    <%= button_to class_package_path(package), method: :delete, form_class: 'delete-button', class:"dropdown-item", data: { 
+                      controller: "confirmation", 
+                      action: "click->confirmation#deleteForm", 
+                      confirmation_title_after_confirm_value: "Delete it!",
+                      confirmation_text_after_confirm_value: "Your data has been deleted.",
+                      confirmation_confirm_button_text_value: "Delete",
+                      confirmation_message_value: "Do you want to delete this?",
+                      confirmation_type_value: "delete"
+                    } do %>
+                      <i class="dw dw-delete-3"></i> Delete
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @class_packages.count >= 1 %>
+      <div class="d-flex justify-content-end">
+        <%== pagy_bootstrap_nav(@pagy) %>
+      </div>
+    <% end %>
+  </div>
+  <!-- basic table  End -->
+</div>

@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  trainers_id: 1
+  price: 9.99
+  duration: MyString
+  status: MyString
+  available_date: MyString
+
+two:
+  name: MyString
+  description: MyText
+  trainers_id: 1
+  price: 9.99
+  duration: MyString
+  status: MyString
+  available_date: MyString

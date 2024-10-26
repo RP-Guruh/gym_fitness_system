@@ -111,6 +111,7 @@ class PermissionsController < ApplicationController
       "MembershipPackage",
       "Member",
       "Instructure",
+      "ClassPackage",
     ]
   end
 

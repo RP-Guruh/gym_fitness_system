@@ -111,6 +111,8 @@
               <%= image_tag current_user.employee.employee_photo.variant(resize_to_limit: [100, nil]), alt: "Employee Photo" %>
             <% elsif current_user.member && current_user.member.member_photo.attached? %>
               <%= image_tag current_user.member.member_photo.variant(resize_to_limit: [100, nil]), alt: "Member Photo" %>
+            <% elsif current_user.instructure && current_user.instructure.instructure_photo.attached? %>
+              <%= image_tag current_user.instructure.instructure_photo.variant(resize_to_limit: [100, nil]), alt: "instructure Photo" %>
             <% else %>
               <img src="vendors/images/photo1.jpg" alt="">
             <% end %>

@@ -76,6 +76,14 @@
             <% end %>
           </li>
         <% end %>
+        <% if policy(ClassPackage).index? %>
+          <li>
+            <%= link_to class_packages_path, class: "dropdown-toggle", data: { turbo: "true" } do %>
+              <span class="micon dw dw-tag-1"></span>
+              <span class="mtext">Class Gym Package</span>
+            <% end %>
+          </li>
+        <% end %>
         <% if policy(InventoryCategory).index? %>
           <li>
             <%= link_to inventory_categories_path, class: "dropdown-toggle", data: { turbo: "true" } do %>

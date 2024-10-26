@@ -32,7 +32,8 @@ class AccountConfigurationsController < ApplicationController
       set_gender
       render "profile_employee"
     when 3
-      @instructure = Instructure.where(user_id: user.id)
+      @instructure = Instructure.where(user_id: user.id).first
+      console
       render "profile_instructure"
     when 4
       @member = Member.where(user_id: user.id)
