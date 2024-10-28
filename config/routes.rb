@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :date_class_availables
   resources :class_packages
   resources :instructures
   resources :members

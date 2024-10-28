@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_26_040245) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_28_140954) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -52,8 +52,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_26_040245) do
     t.integer "updated_by"
     t.string "updated_by_name"
     t.string "status", default: "available", null: false
-    t.json "available_date"
     t.index ["trainers_id"], name: "index_class_packages_on_trainers_id"
+  end
+
+  create_table "date_class_availables", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.date "available_date"
+    t.string "note"
+    t.bigint "class_packages_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["class_packages_id"], name: "index_date_class_availables_on_class_packages_id"
   end
 
   create_table "districts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -362,6 +370,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_26_040245) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "class_packages", "trainers", column: "trainers_id"
+  add_foreign_key "date_class_availables", "class_packages", column: "class_packages_id"
   add_foreign_key "districts", "regencies"
   add_foreign_key "employees", "users"
   add_foreign_key "instructures", "users"

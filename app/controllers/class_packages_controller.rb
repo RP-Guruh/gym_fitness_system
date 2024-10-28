@@ -22,6 +22,7 @@ class ClassPackagesController < ApplicationController
   # GET /class_packages/new
   def new
     @class_package = ClassPackage.new
+    @class_package.date_class_availables.build
   end
 
   # GET /class_packages/1/edit
@@ -75,6 +76,11 @@ class ClassPackagesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def class_package_params
-    params.require(:class_package).permit(:name, :description, :trainers_id, :price, :duration, :status, :available_date)
+    params.require(:class_package).permit(:name, :description, :trainers_id, :price, :duration, :status, date_class_availables: [
+                                                                                                           :id,
+                                                                                                           :available_date,
+                                                                                                           :note,
+                                                                                                           :_destroy,
+                                                                                                         ])
   end
 end

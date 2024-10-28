@@ -3,6 +3,8 @@ class ClassPackage < ApplicationRecord
   attr_accessor :current_user
 
   has_one_attached :class_member_photo
+  has_many :date_class_availables, dependent: :destroy
+  accepts_nested_attributes_for :date_class_available, allow_destroy: true
 
   def self.ransackable_attributes(auth_object = nil)
     ["created_at",

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  available_date: 2024-10-28
+  note: MyString
+  ClassPackage: one
+
+two:
+  available_date: 2024-10-28
+  note: MyString
+  ClassPackage: two

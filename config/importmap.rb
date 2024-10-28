@@ -17,3 +17,4 @@ pin "filepond-plugin-image-crop" # @2.0.6
 pin "filepond-plugin-image-resize" # @2.0.10
 pin "filepond-plugin-image-transform" # @3.8.7
 pin "filepond-plugin-image-edit" # @1.6.3
+pin "@stimulus-components/rails-nested-form", to: "@stimulus-components--rails-nested-form.js" # @5.0.0
